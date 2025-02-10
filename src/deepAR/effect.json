@@ -1,0 +1,209 @@
+{
+    "animationEnabled": true,
+    "children": [
+        {
+            "animationEnabled": true,
+            "children": [
+                {
+                    "animationEnabled": true,
+                    "components": [
+                        {
+                            "blendShapeWeightsExpanded": false,
+                            "bonesExpanded": false,
+                            "enabled": true,
+                            "material": "~/Materials/Eyes.mat",
+                            "mesh": "~/__dprs_int_f18caee1_d65d_4319_957b_2f6556abda06__/quad_mesh.armesh",
+                            "meshDriver": "none",
+                            "open": true,
+                            "type": "meshRenderer"
+                        },
+                        {
+                            "enabled": true,
+                            "eyePosition": "right",
+                            "open": true,
+                            "type": "eyePosition"
+                        }
+                    ],
+                    "depth": 0,
+                    "dynamicUv": "disabled",
+                    "editorAnimationsOpen": false,
+                    "editorOpen": false,
+                    "editorPropertyOpen": true,
+                    "editorSelectedAnimation": "",
+                    "enabled": true,
+                    "localEulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "localPosition": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "localScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "name": "RightEye",
+                    "viewId": 2
+                },
+                {
+                    "animationEnabled": true,
+                    "components": [
+                        {
+                            "blendShapeWeightsExpanded": false,
+                            "bonesExpanded": false,
+                            "enabled": true,
+                            "material": "~/Materials/Eyes.mat",
+                            "mesh": "~/__dprs_int_f18caee1_d65d_4319_957b_2f6556abda06__/quad_mesh.armesh",
+                            "meshDriver": "none",
+                            "open": true,
+                            "type": "meshRenderer"
+                        },
+                        {
+                            "enabled": true,
+                            "eyePosition": "left",
+                            "open": true,
+                            "type": "eyePosition"
+                        }
+                    ],
+                    "depth": 0,
+                    "dynamicUv": "disabled",
+                    "editorAnimationsOpen": false,
+                    "editorOpen": false,
+                    "editorPropertyOpen": true,
+                    "editorSelectedAnimation": "",
+                    "enabled": true,
+                    "localEulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "localPosition": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "localScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "name": "LeftEye",
+                    "viewId": 2
+                }
+            ],
+            "components": [
+                {
+                    "enableThresholdX": false,
+                    "enableThresholdY": false,
+                    "enableThresholdZ": false,
+                    "enabled": true,
+                    "faceId": -1,
+                    "ignoreRotationX": false,
+                    "ignoreRotationY": false,
+                    "ignoreRotationZ": false,
+                    "ignoreTranslationX": false,
+                    "ignoreTranslationY": false,
+                    "ignoreTranslationZ": false,
+                    "open": true,
+                    "thresholdTranslationX": 0.0,
+                    "thresholdTranslationY": 0.0,
+                    "thresholdTranslationZ": 0.0,
+                    "type": "facePosition"
+                }
+            ],
+            "depth": 0,
+            "dynamicUv": "disabled",
+            "editorAnimationsOpen": false,
+            "editorOpen": true,
+            "editorPropertyOpen": true,
+            "editorSelectedAnimation": "",
+            "enabled": true,
+            "localEulerAngles": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "localPosition": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "localScale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "Face",
+            "viewId": 2
+        },
+        {
+            "animationEnabled": true,
+            "components": [
+                {
+                    "blendShapeWeightsExpanded": false,
+                    "bonesExpanded": false,
+                    "enabled": true,
+                    "material": "~/Materials/Occluder.mat",
+                    "mesh": "~/__dprs_int_f18caee1_d65d_4319_957b_2f6556abda06__/eyes2_mesh.armesh",
+                    "meshDriver": "vertices2DEyes2",
+                    "open": true,
+                    "type": "meshRenderer"
+                }
+            ],
+            "depth": 0,
+            "dynamicUv": "disabled",
+            "editorAnimationsOpen": false,
+            "editorOpen": false,
+            "editorPropertyOpen": true,
+            "editorSelectedAnimation": "",
+            "enabled": true,
+            "localEulerAngles": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "localPosition": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "localScale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "Occluder",
+            "viewId": 2
+        }
+    ],
+    "depth": 0,
+    "dynamicUv": "disabled",
+    "editorAnimationsOpen": false,
+    "editorOpen": true,
+    "editorPropertyOpen": true,
+    "editorSelectedAnimation": "",
+    "enabled": true,
+    "hiddenViewIds": [],
+    "localEulerAngles": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "localPosition": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "localScale": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "name": "Root",
+    "space": "camera",
+    "viewId": 2
+}

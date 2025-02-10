@@ -1,0 +1,14 @@
+{
+    "autoGenMipmaps": false,
+    "compression": "lossless",
+    "dataType": "colorData",
+    "format": "png",
+    "hasMipmaps": true,
+    "height": 4096,
+    "originalFormatLossy": false,
+    "quality": 0,
+    "resizeMode": "bilinear",
+    "type": "texture",
+    "width": 4096,
+    "wrapMode": "repeat"
+}

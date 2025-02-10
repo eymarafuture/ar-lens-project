@@ -1,0 +1,13 @@
+:root {
+  --themeColor--: #f87424;
+}
+
+.aic {
+  align-items: center;
+}
+.jcc {
+  justify-content: center;
+}
+.jcb {
+  justify-content: space-between;
+}

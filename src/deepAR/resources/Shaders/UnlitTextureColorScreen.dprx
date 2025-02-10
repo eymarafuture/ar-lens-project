@@ -1,0 +1,40 @@
+{
+    "fragmentAttribs": {
+        "v_texcoord0": {
+            "type": "float2"
+        }
+    },
+    "fragmentDefines": [],
+    "fragmentShader": "UnlitTextureColorScreen/Fragment.sc",
+    "includes": [],
+    "toolkitVersion": "1.0",
+    "uniformOrder": [
+        "s_texColor",
+        "u_color"
+    ],
+    "uniforms": {
+        "s_texColor": {
+            "editable": true,
+            "nameKey": "uniform.texture",
+            "requireColorData": true,
+            "requireMipmaps": false,
+            "requireNonColorData": false,
+            "texture": "../__dprs_int_f18caee1_d65d_4319_957b_2f6556abda06__/empty_texture_color_data.png",
+            "type": "texture"
+        },
+        "u_color": {
+            "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "dataType": "color",
+            "editable": true,
+            "nameKey": "uniform.color",
+            "type": "vector"
+        }
+    },
+    "vertexDefines": [],
+    "vertexShader": "UnlitTextureColorScreen/Vertex.sc"
+}

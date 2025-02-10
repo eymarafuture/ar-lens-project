@@ -1,0 +1,28 @@
+{
+    "flags": {
+        "blendMode": "screen",
+        "cullMode": "off",
+        "enableDepthTest": true,
+        "writeAlpha": true,
+        "writeColor": true,
+        "writeDepth": true
+    },
+    "shader": "../Shaders/UnlitTextureColorScreen.dprx",
+    "uniformValues": {
+        "s_texColor": {
+            "texture": "MAGIC EYE - AQUA BLUE.png",
+            "type": "texture"
+        },
+        "u_color": {
+            "color": [
+                1,
+                0.999993622303009,
+                0.9999899864196777,
+                1
+            ],
+            "dataType": "color",
+            "type": "vector"
+        }
+    },
+    "uvTransformUniformValues": {}
+}
