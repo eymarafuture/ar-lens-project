@@ -2,7 +2,9 @@ import { Client, Account, Storage, Databases } from "appwrite";
 
 export const client = new Client();
 
-client.setEndpoint("http://localhost/v1").setProject("6795283800384ec117ee");
+client
+  .setEndpoint(process.env.NEXT_PUBLIC_PROJECT_ENDPOINT)
+  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID);
 
 export const account = new Account(client);
 export const storage = new Storage(client);

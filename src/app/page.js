@@ -5,7 +5,7 @@ import { Button, Input } from "@/components/common/FormFields";
 import Dashboard from "@/components/Dashboard";
 
 const LoginPage = () => {
-  const [loggedInUser, setLoggedInUser] = useState({ name: "bilal" });
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [name, setName] = useState("");
