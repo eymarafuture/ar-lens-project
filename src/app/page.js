@@ -47,7 +47,7 @@ const LoginPage = () => {
         setLoader(false); // Redirect to login page if not authenticated
       }
     }
-    // fetch();
+    fetch();
   }, [account]);
 
   if (!loader) {

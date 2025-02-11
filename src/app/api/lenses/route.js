@@ -2,7 +2,7 @@ import { databases, ID } from "@/app/appwrite";
 import { apiResponse } from "@/lib/helperFunc";
 import { NextResponse } from "next/server";
 export async function GET() {
-  console.log(process.env);
+  // console.log(process.env);
   try {
     const data = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
@@ -10,7 +10,7 @@ export async function GET() {
     );
     return NextResponse.json(apiResponse(true, "Data fetch", data?.documents));
   } catch (err) {
-    console.log(err);
+    console.log("Error", err);
   }
 }
 
@@ -25,7 +25,7 @@ export async function POST(req) {
     );
     return NextResponse.json(apiResponse(true, "Data created", data));
   } catch (err) {
-    console.log(err);
+    console.log("Error", err);
   }
 }
 
