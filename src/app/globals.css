@@ -1,5 +1,7 @@
 :root {
   --themeColor--: #f87424;
+  --white--: #f1f1f1;
+  --black--: #1e1e1e;
 }
 
 .aic {
@@ -10,4 +12,25 @@
 }
 .jcb {
   justify-content: space-between;
+}
+p {
+  margin: 0;
+}
+.bg-theme {
+  background-color: var(--themeColor--);
+}
+.text-theme {
+  color: var(--themeColor--);
+}
+.bg-light {
+  background-color: var(--white--);
+}
+.text-light {
+  color: var(--white--);
+}
+.bg-dark {
+  background-color: var(--black--);
+}
+.text-dark {
+  color: var(--black--);
 }
