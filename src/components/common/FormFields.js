@@ -10,12 +10,12 @@ export const Input = ({ type, placeholder, value, onChange }) => {
   );
 };
 
-export const Button = ({ onClick, text }) => {
+export const Button = ({ onClick, text, w = "100%" }) => {
   return (
     <button
-      className="text-light fw-bold rounded p-2 border border-0"
+      className="text-light fw-bold rounded p-2 border border-0 bg-theme"
       type="button"
-      style={{ backgroundColor: "var(--themeColor--)" }}
+      style={{ width: w }}
       onClick={onClick}
     >
       {text}

@@ -5,6 +5,7 @@ export const initialState = {
       : false,
   toggleTheme: false,
   toggleMenu: false,
+  lenses: null,
 };
 
 const reducer = (state, action) => {
@@ -29,6 +30,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         toggleMenu: !state.toggleMenu,
+      };
+    case "SET_LENSES":
+      return {
+        ...state,
+        lenses: action.payload,
       };
     default:
       return state;

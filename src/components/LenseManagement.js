@@ -3,6 +3,8 @@
 import { useStateValue } from "@/lib/StateProvider";
 import React from "react";
 import { IoIosMenu } from "react-icons/io";
+import LensesTable from "./LensesTable";
+import { Button } from "./common/FormFields";
 
 const LenseManagement = () => {
   const [{ loggedInUser, toggleMenu }, dispatch] = useStateValue();
@@ -26,24 +28,11 @@ const LenseManagement = () => {
         </div>
 
         {/* inventory listing */}
-        <div className="bg-secondary p-2 mb-2">
-          inventory table header section
+        <div className="py-2 mb-2 text-end">
+          {/* <h2 className="m-0 w-100">Lense Management</h2> */}
+          <Button text="Add Lense" w="10rem" />
         </div>
-        <table className="mb-2">
-          <thead>
-            <tr className="bg-light border-2 border-light">
-              <td className="p-2">name</td>
-            </tr>
-          </thead>
-          <tbody>
-            {[1, 2, 3, 4].map((item) => (
-              <tr className="bg-info border-2 border-light">
-                <td className="p-2 ">{item} table item</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="bg-secondary p-2 mb-2">pagination section</div>
+        <LensesTable />
       </div>
     </div>
   );

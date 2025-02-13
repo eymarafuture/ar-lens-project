@@ -34,3 +34,6 @@ p {
 .text-dark {
   color: var(--black--);
 }
+.border-theme {
+  border: 2px solid var(--themeColor--);
+}

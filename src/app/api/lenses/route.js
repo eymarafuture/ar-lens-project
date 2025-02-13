@@ -1,14 +1,41 @@
-import { databases, ID } from "@/app/appwrite";
+import { databases, ID } from "@/lib/appwrite";
 import { apiResponse } from "@/lib/helperFunc";
 import { NextResponse } from "next/server";
-export async function GET() {
-  // console.log(process.env);
+import { authorization } from "../middleware";
+export async function GET(req) {
   try {
-    const data = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-      process.env.NEXT_PUBLIC_LENSE_COLLECTION // collectionId
+    const reqHeaders = new Headers(req.headers);
+    if (authorization(reqHeaders.get("authorization"))) {
+      const lenses = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+        process.env.NEXT_PUBLIC_LENSE_COLLECTION // collectionId
+      );
+      const lens_brands = lenses.documents;
+      // lens_brand_Id;
+      const allLenses = [];
+      for (const lense of lens_brands) {
+        const brand = await databases.getDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+          process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
+          lense?.lens_brand_Id
+        );
+
+        allLenses.push({
+          ...lense,
+          ...brand,
+        });
+      }
+
+      return NextResponse.json(
+        apiResponse(true, "Lense data fetched", {
+          count: lenses.total,
+          data: allLenses,
+        })
+      );
+    }
+    return NextResponse.json(
+      apiResponse(false, "You are not authorized", null)
     );
-    return NextResponse.json(apiResponse(true, "Data fetch", data?.documents));
   } catch (err) {
     console.log("Error", err);
   }

@@ -1,27 +1,54 @@
 "use client";
 import { databases } from "@/lib/appwrite";
 import { useStateValue } from "@/lib/StateProvider";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
+import { Button } from "./common/FormFields";
+import LensesTable from "./LensesTable";
 const Dashboard = () => {
-  const [{ loggedInUser, toggleMenu }, dispatch] = useStateValue();
+  const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
+  const [lenseStock, setLenseStock] = useState(0);
+  const [lenseuStock, setLenseUstock] = useState(0);
 
   useEffect(() => {
     async function fetch() {
-      const data = await databases.listDocuments(
-        process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-        process.env.NEXT_PUBLIC_LENSE_COLLECTION // collectionId
+      const ress = await axios.get("/api/lenses", {
+        headers: {
+          Authorization: process.env.NEXT_PUBLIC_API_KEY,
+        },
+      });
+
+      const data = ress.data.data;
+
+      dispatch({
+        type: "SET_LENSES",
+        payload: data,
+      });
+
+      const counts = data.data.reduce(
+        (acc, item) => {
+          if (item.is_active) {
+            acc.trueCount++;
+          } else {
+            acc.falseCount++;
+          }
+          return acc;
+        },
+        { trueCount: 0, falseCount: 0 }
       );
 
-      console.log(data);
+      setLenseStock(counts.trueCount);
+      setLenseUstock(counts.falseCount);
     }
     fetch();
-  });
+  }, []);
+
   return (
     <div
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
     >
-      <div className="bg-light  p-2 h-100">
+      <div className="bg-light p-2 h-100">
         <div className="bg-light rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
           {/* header section */}
           <IoIosMenu
@@ -37,39 +64,44 @@ const Dashboard = () => {
         </div>
 
         {/* analytics */}
-        <div className="row mb-2">
-          {[1, 2, 3, 4].map((item, indx) => (
-            <div className="col-md-3">
+        <div className="row my-4">
+          {[
+            {
+              name: "Lense Inventory (In-Stock)",
+              value: lenseStock,
+            },
+            {
+              name: "Lense Inventory (Out of Stock)",
+              value: lenseuStock,
+            },
+            {
+              name: "Brand Available",
+              value: 0,
+            },
+          ].map((item, indx) => (
+            <div key={indx} className="col-lg-3 col-md-6 col-6">
               <div
-                className={`shadow rounded-1 p-2 py-5 ${
+                className={`shadow d-flex flex-column jcb rounded-1 px-3 py-2 h-100 ${
                   indx % 2 === 0 ? "bg-theme text-light" : "bg-light text-theme"
                 }`}
               >
-                {item} box section
+                <h5>{item.name}</h5>
+                <h2 className="text-end">
+                  {item.value < 10
+                    ? `0${item.value}`
+                    : item?.value?.toLocaleString("en-US")}
+                </h2>
               </div>
             </div>
           ))}
         </div>
 
         {/* inventory listing */}
-        <div className="bg-secondary p-2 mb-2">
-          inventory table header section
+        <div className="py-2  mb-2 d-flex flex-column flex-md-row align-items-end jcb">
+          <h2 className="m-0 w-100">Lense Management</h2>
+          <Button text="Add Lense" w="10rem" />
         </div>
-        <table className="mb-2">
-          <thead>
-            <tr className="bg-light border-2 border-light">
-              <td className="p-2">name</td>
-            </tr>
-          </thead>
-          <tbody>
-            {[1, 2, 3, 4].map((item) => (
-              <tr className="bg-info border-2 border-light">
-                <td className="p-2 ">{item} table item</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="bg-secondary p-2 mb-2">pagination section</div>
+        <LensesTable />
       </div>
     </div>
   );
