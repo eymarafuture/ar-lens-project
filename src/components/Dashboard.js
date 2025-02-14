@@ -42,7 +42,10 @@ const Dashboard = () => {
       setLenseStock(counts.trueCount);
       setLenseUstock(counts.falseCount);
     }
-    fetch();
+
+    if (!lenses) {
+      fetch();
+    }
   }, [lenses]);
 
   return (

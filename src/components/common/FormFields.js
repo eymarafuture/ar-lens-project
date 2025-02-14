@@ -25,11 +25,14 @@ export const Select = ({ type, placeholder, value, onChange, options }) => {
   );
 };
 
-export const Button = ({ onClick, text, w = "100%" }) => {
+export const Button = ({ onClick, text, w = "100%", isDisabled }) => {
   return (
     <button
-      className="text-light fw-bold rounded p-2 border border-0 bg-theme"
+      className={`text-light fw-bold rounded p-2 border border-0 ${
+        isDisabled ? "bg-light" : "bg-theme"
+      }`}
       type="button"
+      disabled={isDisabled}
       style={{ width: w }}
       onClick={onClick}
     >

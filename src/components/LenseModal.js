@@ -3,8 +3,10 @@ import FormModal from "./FormModal";
 import { Button, Input, Select, Switch } from "./common/FormFields";
 import { Col, Row } from "reactstrap";
 import axios from "axios";
+import { useStateValue } from "@/lib/StateProvider";
 
 const LenseModal = () => {
+  const [{}, dispatch] = useStateValue();
   const [lenseState, setLenseState] = useState({
     name: "",
     lens_brand_Id: "",
@@ -80,6 +82,9 @@ const LenseModal = () => {
       <Button text="Add Lense" w="10rem" onClick={() => setIsOpen(!isOpen)} />
 
       <FormModal
+        isDisabled={
+          !lens_effect || !lens_png || !name || !lens_brand_Id ? true : false
+        }
         btnText="Add Lense"
         handleClick={handleSubmit}
         title="Add New Lense"

@@ -9,6 +9,7 @@ const FormModal = ({
   handleClick,
   setIsOpen,
   btnText,
+  isDisabled,
 }) => {
   return (
     <Modal isOpen={isOpen}>
@@ -23,7 +24,11 @@ const FormModal = ({
               </Col>
 
               <Col md={6}>
-                <Button text={btnText} onClick={handleClick} />
+                <Button
+                  isDisabled={isDisabled}
+                  text={btnText}
+                  onClick={handleClick}
+                />
               </Col>
             </Row>
           </Col>
