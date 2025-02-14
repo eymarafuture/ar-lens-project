@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const SibdeBarSection = () => {
+const SibdeBarSection = ({ logout }) => {
   const pathname = usePathname();
   const [{ loggedInUser, toggleMenu }] = useStateValue();
   return (
@@ -31,6 +31,16 @@ const SibdeBarSection = () => {
             {loggedInUser?.email?.slice(12)}
           </span>
           <span>{loggedInUser?.labels?.map((item) => item)}</span>
+
+          <span
+            onClick={logout}
+            className="fw-bold mt-3"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </span>
         </div>
         <div className="p-2 mt-4 d-flex flex-column">
           {sidebar.map((item) => (

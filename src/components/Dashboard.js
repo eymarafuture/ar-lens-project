@@ -43,7 +43,7 @@ const Dashboard = () => {
       setLenseUstock(counts.falseCount);
     }
     fetch();
-  }, []);
+  }, [lenses]);
 
   return (
     <div

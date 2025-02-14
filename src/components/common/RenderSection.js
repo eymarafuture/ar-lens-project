@@ -73,7 +73,7 @@ const RenderSection = ({ children }) => {
           <div className="bg-light container-fluid vh-100">
             {/* <SibdeBarSmall /> */}
             <div className="row h-100 ">
-              <SibdeBarSection />
+              <SibdeBarSection logout={logout} />
               {children}
             </div>
           </div>

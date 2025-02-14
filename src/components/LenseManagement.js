@@ -5,6 +5,7 @@ import React from "react";
 import { IoIosMenu } from "react-icons/io";
 import LensesTable from "./LensesTable";
 import { Button } from "./common/FormFields";
+import LenseModal from "./LenseModal";
 
 const LenseManagement = () => {
   const [{ loggedInUser, toggleMenu }, dispatch] = useStateValue();
@@ -30,7 +31,8 @@ const LenseManagement = () => {
         {/* inventory listing */}
         <div className="py-2 mb-2 text-end">
           {/* <h2 className="m-0 w-100">Lense Management</h2> */}
-          <Button text="Add Lense" w="10rem" />
+          {/* <Button text="Add Lense" w="10rem" /> */}
+          <LenseModal />
         </div>
         <LensesTable />
       </div>

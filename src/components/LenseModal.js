@@ -47,7 +47,11 @@ const LenseModal = () => {
         },
       });
       const data = ress?.data;
-      console.log(data);
+
+      dispatch({
+        type: "SET_LENSES",
+        payload: null,
+      });
       setIsOpen(false);
     } catch (err) {
       console.log(err);
@@ -117,7 +121,7 @@ const LenseModal = () => {
             />
           </Col>,
 
-          <Col md={12} className="mb-3">
+          <Col md={12} className="mb-3" key="brand_media">
             <Row>
               {[
                 { name: "png", img: lens_png, label: "Lense Image" },
@@ -142,7 +146,7 @@ const LenseModal = () => {
             </Row>
           </Col>,
 
-          <Col className="mb-3 d-flex aic" key="lens_brand_Id" md={6}>
+          <Col className="mb-3 d-flex aic" key="brand_active" md={6}>
             <label className="me-2">Active</label>
             <Switch
               value={is_active}
