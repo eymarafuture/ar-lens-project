@@ -6,30 +6,16 @@ export async function GET(req) {
   try {
     const reqHeaders = new Headers(req.headers);
     if (authorization(reqHeaders.get("authorization"))) {
-      const lenses = await databases.listDocuments(
+      const brands = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-        process.env.NEXT_PUBLIC_LENSE_COLLECTION // collectionId
+        process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION // collectionId
       );
-      const lens_brands = lenses.documents;
-      // lens_brand_Id;
-      const allLenses = [];
-      for (const lense of lens_brands) {
-        const brand = await databases.getDocument(
-          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-          process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
-          lense?.lens_brand_Id
-        );
-
-        allLenses.push({
-          ...lense,
-          brand,
-        });
-      }
+      const lens_brands = brands.documents;
 
       return NextResponse.json(
-        apiResponse(true, "Lense data fetched", {
-          count: lenses.total,
-          data: allLenses,
+        apiResponse(true, "Brands data fetched", {
+          count: brands.total,
+          data: lens_brands,
         })
       );
     }
@@ -44,7 +30,6 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const request = await req.json();
-    console.log(request);
     const data = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
       process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId

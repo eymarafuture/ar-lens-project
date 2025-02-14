@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { Button } from "./common/FormFields";
 import LensesTable from "./LensesTable";
+import LenseModal from "./LenseModal";
 const Dashboard = () => {
   const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
@@ -99,7 +100,7 @@ const Dashboard = () => {
         {/* inventory listing */}
         <div className="py-2  mb-2 d-flex flex-column flex-md-row align-items-end jcb">
           <h2 className="m-0 w-100">Lense Management</h2>
-          <Button text="Add Lense" w="10rem" />
+          <LenseModal />
         </div>
         <LensesTable />
       </div>

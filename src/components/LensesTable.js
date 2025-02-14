@@ -39,7 +39,7 @@ const LensesTable = () => {
                   <img style={{ width: "100%" }} src={item?.brand_logo} />
                 </div>
               </td> */}
-              <td className="p-2 ">{item?.brand_name}</td>
+              <td className="p-2 ">{item?.brand?.brand_name}</td>
               <td className="p-2 ">{item?.fetch_count}</td>
               <td className="p-2 ">
                 {item?.is_active ? "In-Stock" : "Out of Stock"}
