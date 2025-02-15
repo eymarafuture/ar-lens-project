@@ -7,45 +7,30 @@ import { IoIosMenu } from "react-icons/io";
 import { Button } from "./common/FormFields";
 import LensesTable from "./LensesTable";
 import LenseModal from "./LenseModal";
+import { fetchLenses } from "@/endpoints";
 const Dashboard = () => {
   const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
 
   useEffect(() => {
-    async function fetch() {
-      const ress = await axios.get("/api/lenses", {
-        headers: {
-          Authorization: process.env.NEXT_PUBLIC_API_KEY,
-        },
-      });
+    fetchLenses(dispatch, "/api/lenses");
+  }, []);
 
-      const data = ress.data.data;
-
-      dispatch({
-        type: "SET_LENSES",
-        payload: data,
-      });
-
-      const counts = data.data.reduce(
-        (acc, item) => {
-          if (item.is_active) {
-            acc.trueCount++;
-          } else {
-            acc.falseCount++;
-          }
-          return acc;
-        },
-        { trueCount: 0, falseCount: 0 }
-      );
-
-      setLenseStock(counts.trueCount);
-      setLenseUstock(counts.falseCount);
-    }
-
-    if (!lenses) {
-      fetch();
-    }
+  useEffect(() => {
+    const counts = lenses?.data?.reduce(
+      (acc, item) => {
+        if (item.is_active) {
+          acc.trueCount++;
+        } else {
+          acc.falseCount++;
+        }
+        return acc;
+      },
+      { trueCount: 0, falseCount: 0 }
+    );
+    setLenseStock(counts?.trueCount);
+    setLenseUstock(counts?.falseCount);
   }, [lenses]);
 
   return (

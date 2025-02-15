@@ -5,6 +5,9 @@ import { authorization } from "../middleware";
 export async function GET(req) {
   try {
     const reqHeaders = new Headers(req.headers);
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    // console.log("is_active", searchParams.get("is_active"));
     if (authorization(reqHeaders.get("authorization"))) {
       const lenses = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
@@ -33,27 +36,36 @@ export async function GET(req) {
         })
       );
     }
+
     return NextResponse.json(
       apiResponse(false, "You are not authorized", null)
     );
   } catch (err) {
     console.log("Error", err);
+    return NextResponse.json(apiResponse(false, "Something went wrong", err));
   }
 }
 
 export async function POST(req) {
   try {
     const request = await req.json();
-    console.log(request);
-    const data = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-      process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
-      ID.unique(),
-      request
+    // console.log(request);
+    const reqHeaders = new Headers(req.headers);
+    if (authorization(reqHeaders.get("authorization"))) {
+      const data = await databases.createDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+        process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+        ID.unique(),
+        request
+      );
+      return NextResponse.json(apiResponse(true, "Data created", data));
+    }
+    return NextResponse.json(
+      apiResponse(false, "You are not authorized", null)
     );
-    return NextResponse.json(apiResponse(true, "Data created", data));
   } catch (err) {
     console.log("Error", err);
+    return NextResponse.json(apiResponse(false, "Something went wrong", err));
   }
 }
 

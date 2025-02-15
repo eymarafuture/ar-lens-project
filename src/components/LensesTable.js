@@ -5,6 +5,10 @@ import Image from "next/image";
 
 const LensesTable = () => {
   const [{ lenses }] = useStateValue();
+  const handleEdit = (id) => {
+    localStorage.setItem("edit_lense", JSON.stringify(id));
+  };
+
   return (
     <div className="w-100" style={{ overflowX: "auto" }}>
       <table className="mb-2 w-100">
@@ -45,7 +49,7 @@ const LensesTable = () => {
                 {item?.is_active ? "In-Stock" : "Out of Stock"}
               </td>
               <td className="p-2 ">
-                <Button text="Edit" onClick={() => {}} />
+                <Button text="Edit" onClick={() => handleEdit(item?.$id)} />
               </td>
             </tr>
           ))}

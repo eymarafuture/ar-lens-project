@@ -4,6 +4,8 @@ import { Button, Input, Select, Switch } from "./common/FormFields";
 import { Col, Row } from "reactstrap";
 import axios from "axios";
 import { useStateValue } from "@/lib/StateProvider";
+import { ID, storage } from "@/lib/appwrite";
+import { createLense, fetchLenses } from "@/endpoints";
 
 const LenseModal = () => {
   const [{}, dispatch] = useStateValue();
@@ -11,53 +13,49 @@ const LenseModal = () => {
     name: "",
     lens_brand_Id: "",
     lens_png: "",
-    lens_effect:
-      "https://cloud.appwrite.io/v1/storage/buckets/67ae3c38002754b892ba/files/67ae3ce9001e885109c0/view?project=67aa47ac001a532e4793&mode=admin",
+    lens_effect: "",
     is_active: true,
   });
   const [brands, setBrands] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const { name, lens_brand_Id, is_active, lens_effect, lens_png } = lenseState;
 
-  const UploadImage = (e, key) => {
-    console.log(e, key);
+  const UploadImage = async (e, key) => {
+    const file = e.target.files;
 
-    setLenseState({
-      ...lenseState,
-      lens_png:
-        "https://cloud.appwrite.io/v1/storage/buckets/67ae3c38002754b892ba/files/67ae3ce9001e885109c0/view?project=67aa47ac001a532e4793&mode=admin",
-    });
-    return;
-    // const file = e.target.files[0];
+    let imageRes = await storage.createFile(
+      process.env.NEXT_PUBLIC_LENSE_BUCKET, // bucketId
+      ID.unique(),
+      file[0]
+    );
+    console.log(imageRes?.$id);
 
-    // if(key=="png"){
-    //   setLenseState({
-    //     ...lenseState,
-    //     lens_png:
-    //   })
-    // }
+    if (imageRes) {
+      const result = storage.getFileDownload(
+        process.env.NEXT_PUBLIC_LENSE_BUCKET, // bucketId
+        imageRes?.$id
+      );
+
+      if (key === "png") {
+        setLenseState({
+          ...lenseState,
+          lens_png: result?.href,
+        });
+      }
+      if (key === "effect") {
+        setLenseState({
+          ...lenseState,
+          lens_effect: result?.href,
+        });
+      }
+    }
   };
 
   const handleSubmit = async () => {
     const payload = {
       ...lenseState,
     };
-    try {
-      const ress = await axios.post("/api/lenses", payload, {
-        headers: {
-          Authorization: process.env.NEXT_PUBLIC_API_KEY,
-        },
-      });
-      const data = ress?.data;
-
-      dispatch({
-        type: "SET_LENSES",
-        payload: null,
-      });
-      setIsOpen(false);
-    } catch (err) {
-      console.log(err);
-    }
+    createLense(dispatch, "/api/lenses", payload);
   };
 
   useEffect(() => {
