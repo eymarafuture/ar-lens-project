@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 import { authorization } from "../middleware";
 export async function GET(req) {
   try {
-    const reqHeaders = new Headers(req.headers);
-    if (authorization(reqHeaders.get("authorization"))) {
+    if (authorization(req)) {
       const brands = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
         process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION // collectionId
@@ -27,20 +26,20 @@ export async function GET(req) {
   }
 }
 
-export async function POST(req) {
-  try {
-    const request = await req.json();
-    const data = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-      process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
-      ID.unique(),
-      request
-    );
-    return NextResponse.json(apiResponse(true, "Data created", data));
-  } catch (err) {
-    console.log("Error", err);
-  }
-}
+// export async function POST(req) {
+//   try {
+//     const request = await req.json();
+//     const data = await databases.createDocument(
+//       process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+//       process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+//       ID.unique(),
+//       request
+//     );
+//     return NextResponse.json(apiResponse(true, "Data created", data));
+//   } catch (err) {
+//     console.log("Error", err);
+//   }
+// }
 
 // export async function PUT() {
 //   try {

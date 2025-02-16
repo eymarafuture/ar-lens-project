@@ -67,6 +67,7 @@ const LenseModal = () => {
           },
         });
         const data = ress?.data?.data?.data;
+        // console.log(data);
         setBrands(data);
       } catch (err) {
         console.log(err);
