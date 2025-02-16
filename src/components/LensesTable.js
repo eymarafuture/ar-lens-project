@@ -2,11 +2,14 @@ import { useStateValue } from "@/lib/StateProvider";
 import React from "react";
 import { Button } from "./common/FormFields";
 import Image from "next/image";
+import { updateLense } from "@/endpoints";
 
 const LensesTable = () => {
   const [{ lenses }] = useStateValue();
   const handleEdit = (id) => {
     localStorage.setItem("edit_lense", JSON.stringify(id));
+
+    // updateLense()
   };
 
   return (
