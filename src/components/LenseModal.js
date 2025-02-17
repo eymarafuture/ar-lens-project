@@ -5,10 +5,15 @@ import { Col, Row } from "reactstrap";
 import axios from "axios";
 import { useStateValue } from "@/lib/StateProvider";
 import { ID, storage } from "@/lib/appwrite";
-import { createLense, fetchLenses } from "@/endpoints";
+import { createLense, fetchBrands, fetchLense } from "@/endpoints";
+import { portraitMobile } from "@/lib/mediaQueries";
+import { useMediaQuery } from "usehooks-ts";
+import { useRouter, usePathname, useParams } from "next/navigation";
 
 const LenseModal = () => {
-  const [{}, dispatch] = useStateValue();
+  const [{ isLenseModal }, dispatch] = useStateValue();
+  const isMobile = useMediaQuery(portraitMobile);
+
   const [lenseState, setLenseState] = useState({
     name: "",
     lens_brand_Id: "",
@@ -17,7 +22,7 @@ const LenseModal = () => {
     is_active: true,
   });
   const [brands, setBrands] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+
   const { name, lens_brand_Id, is_active, lens_effect, lens_png } = lenseState;
 
   const UploadImage = async (e, key) => {
@@ -59,26 +64,47 @@ const LenseModal = () => {
   };
 
   useEffect(() => {
-    async function fetch() {
-      try {
-        const ress = await axios.get("/api/brands", {
-          headers: {
-            Authorization: process.env.NEXT_PUBLIC_API_KEY,
-          },
-        });
-        const data = ress?.data?.data?.data;
-        // console.log(data);
-        setBrands(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetch();
+    fetchBrands(setBrands, "/api/brands");
   }, []);
 
+  useEffect(() => {
+    if (isLenseModal) {
+      const edit_lense = JSON.parse(localStorage.getItem("edit_lense"));
+      fetchLense(setLenseState, `/api/lenses?id=${edit_lense}`);
+    } else {
+      setLenseState({
+        name: "",
+        lens_brand_Id: "",
+        lens_png: "",
+        lens_effect: "",
+        is_active: true,
+      });
+    }
+  }, [isLenseModal]);
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <>
-      <Button text="Add Lense" w="10rem" onClick={() => setIsOpen(!isOpen)} />
+      <div className="d-flex gap-2 aic justify-content-end">
+        {pathname !== "/lense-management" && (
+          <Button
+            text="View Lenses"
+            w={isMobile ? "7rem" : "9rem"}
+            onClick={() => {
+              router.push("/lense-management");
+            }}
+          />
+        )}
+        <Button
+          text="Add Lense"
+          w={isMobile ? "7rem" : "9rem"}
+          onClick={() => {
+            dispatch({
+              type: "LENSE_MODAL",
+            });
+          }}
+        />
+      </div>
 
       <FormModal
         isDisabled={
@@ -87,8 +113,9 @@ const LenseModal = () => {
         btnText="Add Lense"
         handleClick={handleSubmit}
         title="Add New Lense"
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isLenseModal}
+        // setIsOpen={setIsOpen}
+        dispatch={dispatch}
         fields={[
           <Col className="mb-3" md={6} key="name">
             <label className="mb-2">Lense Name</label>

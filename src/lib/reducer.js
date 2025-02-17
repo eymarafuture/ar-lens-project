@@ -6,6 +6,7 @@ export const initialState = {
   toggleTheme: false,
   toggleMenu: false,
   lenses: null,
+  isLenseModal: false,
 };
 
 const reducer = (state, action) => {
@@ -35,6 +36,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         lenses: action.payload,
+      };
+    case "LENSE_MODAL":
+      return {
+        ...state,
+        isLenseModal: !state.isLenseModal,
       };
     default:
       return state;

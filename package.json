@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "antd": "^5.24.1",
     "appwrite": "^14.0.1",
     "axios": "^1.7.9",
     "deepar": "^5.6.16",
@@ -16,7 +17,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
-    "reactstrap": "^9.2.3"
+    "reactstrap": "^9.2.3",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

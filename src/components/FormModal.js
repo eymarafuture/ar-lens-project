@@ -7,7 +7,7 @@ const FormModal = ({
   title,
   fields = [],
   handleClick,
-  setIsOpen,
+  dispatch,
   btnText,
   isDisabled,
 }) => {
@@ -20,7 +20,14 @@ const FormModal = ({
           <Col md={12}>
             <Row>
               <Col md={6}>
-                <Button text="Cancel" onClick={() => setIsOpen(!isOpen)} />
+                <Button
+                  text="Cancel"
+                  onClick={() => {
+                    dispatch({
+                      type: "LENSE_MODAL",
+                    });
+                  }}
+                />
               </Col>
 
               <Col md={6}>
