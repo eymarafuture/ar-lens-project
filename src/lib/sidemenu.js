@@ -5,8 +5,16 @@ export const sidebar = [
     href: "/",
     icon: "",
   },
+
   {
-    name: "Lense Management",
+    name: "Brands Management",
+    childs: [],
+    href: "/brand-management",
+    icon: "",
+  },
+
+  {
+    name: "Lenses Management",
     childs: [],
     href: "/lense-management",
     icon: "",

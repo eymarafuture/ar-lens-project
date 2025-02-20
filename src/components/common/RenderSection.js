@@ -6,8 +6,12 @@ import { Button, Input } from "./FormFields";
 import SibdeBarSection from "./SibdeBarSection";
 import { useStateValue } from "@/lib/StateProvider";
 import SibdeBarSmall from "./SideBarSmall";
+import { useMediaQuery } from "usehooks-ts";
+import { portraitMobile } from "@/lib/mediaQueries";
+import HeaderSection from "./HeaderSection";
 
 const RenderSection = ({ children }) => {
+  const isMobile = useMediaQuery(portraitMobile);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loader, setLoader] = useState(true);
@@ -74,6 +78,7 @@ const RenderSection = ({ children }) => {
             {/* <SibdeBarSmall /> */}
             <div className="row h-100 ">
               <SibdeBarSection logout={logout} />
+              {/* <HeaderSection /> */}
               {children}
             </div>
           </div>
@@ -81,7 +86,7 @@ const RenderSection = ({ children }) => {
           <div className="vh-100">
             <div className="container-fluid h-100">
               <div className="row h-100">
-                <div className="col-lg-6 ">
+                <div className="col-lg-6 d-none d-md-block">
                   <div className=" d-flex aic jcc h-100">
                     <img
                       src="/assets/optics_logo.png"
@@ -92,13 +97,17 @@ const RenderSection = ({ children }) => {
                   </div>
                 </div>
                 <div className="col-lg-6">
-                  <div className=" h-100 d-flex aic jcc">
-                    <form className="shadow rounded p-2 p-md-4 h-75 w-75 d-flex flex-column jcc gap-2">
+                  <div className="h-100 d-flex aic jcc">
+                    <form
+                      className={`shadow rounded 
+                    p-2 p-md-4 h-75 ${isMobile ? "w-100" : "w-75"}  d-flex 
+                    flex-column jcc gap-2`}
+                    >
                       <div className="d-flex aic jcc">
                         <img
                           src="/assets/optics_logo.png"
                           style={{
-                            width: "30%",
+                            width: isMobile ? "70%" : "30%",
                           }}
                         />
                       </div>

@@ -2,13 +2,36 @@ import { databases, ID } from "@/lib/appwrite";
 import { apiResponse } from "@/lib/helperFunc";
 import { NextResponse } from "next/server";
 import { authorization } from "../middleware";
+
 export async function GET(req) {
   try {
-    const reqHeaders = new Headers(req.headers);
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
-    // console.log("is_active", searchParams.get("is_active"));
-    if (authorization(reqHeaders.get("authorization"))) {
+    const is_active = searchParams.get("is_active");
+    const $id = searchParams.get("id");
+    console.log(is_active, $id);
+    if (authorization(req)) {
+      if ($id) {
+        const lense = await databases.getDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+          process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+          $id
+        );
+        const brand = await databases.getDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+          process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
+          lense?.lens_brand_Id
+        );
+        return NextResponse.json(
+          apiResponse(true, "Lense data fetched", {
+            count: 1,
+            data: {
+              ...lense,
+              brand,
+            },
+          })
+        );
+      }
       const lenses = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
         process.env.NEXT_PUBLIC_LENSE_COLLECTION // collectionId
@@ -30,7 +53,7 @@ export async function GET(req) {
       }
 
       return NextResponse.json(
-        apiResponse(true, "Lense data fetched", {
+        apiResponse(true, "Lenses data fetched", {
           count: lenses.total,
           data: allLenses,
         })
@@ -50,15 +73,14 @@ export async function POST(req) {
   try {
     const request = await req.json();
     // console.log(request);
-    const reqHeaders = new Headers(req.headers);
-    if (authorization(reqHeaders.get("authorization"))) {
+    if (authorization(req)) {
       const data = await databases.createDocument(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
         process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
         ID.unique(),
         request
       );
-      return NextResponse.json(apiResponse(true, "Data created", data));
+      return NextResponse.json(apiResponse(true, "Lense created", data));
     }
     return NextResponse.json(
       apiResponse(false, "You are not authorized", null)
@@ -69,13 +91,30 @@ export async function POST(req) {
   }
 }
 
-// export async function PUT() {
-//   try {
-//     return NextResponse.json({ message: "hello lenses" });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+export async function PUT(req) {
+  try {
+    const request = await req.json();
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    const documentId = searchParams.get("id");
+    console.log(request, documentId);
+    if (authorization(req)) {
+      const data = await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+        process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+        documentId,
+        request
+      );
+      return NextResponse.json(apiResponse(true, "Lense updated", data));
+    }
+    return NextResponse.json(
+      apiResponse(false, "You are not authorized", null)
+    );
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+  }
+}
 // export async function DELETE() {
 //   try {
 //     return NextResponse.json({ message: "hello lenses" });

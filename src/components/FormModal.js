@@ -7,9 +7,9 @@ const FormModal = ({
   title,
   fields = [],
   handleClick,
-  setIsOpen,
   btnText,
   isDisabled,
+  onClose,
 }) => {
   return (
     <Modal isOpen={isOpen}>
@@ -20,7 +20,7 @@ const FormModal = ({
           <Col md={12}>
             <Row>
               <Col md={6}>
-                <Button text="Cancel" onClick={() => setIsOpen(!isOpen)} />
+                <Button text="Cancel" onClick={onClose} />
               </Col>
 
               <Col md={6}>
