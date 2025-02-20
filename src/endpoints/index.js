@@ -51,20 +51,23 @@ export const createLense = async (dispatch, endpoint, payload) => {
       },
     });
 
+    dispatch({ type: "LENSE_MODAL" });
     fetchLenses(dispatch, endpoint);
   } catch (err) {
     console.log(err);
   }
 };
 
-export const updateLense = async (dispatch, endpoint, payload) => {
+export const updateLense = async (dispatch, endpoint, payload, edit_lense) => {
   try {
-    await axios.put(endpoint, payload, {
+    await axios.put(`${endpoint}?id=${edit_lense}`, payload, {
       headers: {
-        // Authorization: process.env.NEXT_PUBLIC_API_KEY,
+        Authorization: process.env.NEXT_PUBLIC_API_KEY,
       },
     });
 
+    localStorage.removeItem("edit_lense");
+    dispatch({ type: "LENSE_MODAL" });
     fetchLenses(dispatch, endpoint);
   } catch (err) {
     console.log(err);

@@ -94,8 +94,10 @@ export async function POST(req) {
 export async function PUT(req) {
   try {
     const request = await req.json();
-    console.log(request);
-    const documentId = request?.$id;
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    const documentId = searchParams.get("id");
+    console.log(request, documentId);
     if (authorization(req)) {
       const data = await databases.updateDocument(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId

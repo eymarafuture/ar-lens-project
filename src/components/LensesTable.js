@@ -15,7 +15,6 @@ const LensesTable = () => {
 
   const handleEdit = (id) => {
     localStorage.setItem("edit_lense", JSON.stringify(id));
-
     dispatch({ type: "LENSE_MODAL" });
   };
 
@@ -48,37 +47,42 @@ const LensesTable = () => {
           </tr>
         </thead>
         <tbody>
-          {lenses?.data?.map((item, indx) => (
-            <tr key={indx} className="border-theme">
-              <td className={`${isMobile ? "p-0" : "p-2"} w-25`}>
-                <div style={{ width: isMobile ? "80%" : "20%" }}>
-                  <img src={item?.lens_png} style={{ width: "100%" }} />
-                </div>
-              </td>
-              <td className="p-2">{item?.name}</td>
-              {/* <td className="p-2 ">
+          {lenses &&
+            lenses?.data?.map((item, indx) => (
+              <tr key={indx} className="border-theme">
+                <td className={`${isMobile ? "p-0" : "p-2"} w-25`}>
+                  <div style={{ width: isMobile ? "80%" : "20%" }}>
+                    <img
+                      src={item?.lens_png ? item?.lens_png : null}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                </td>
+                <td className="p-2">{item?.name}</td>
+                {/* <td className="p-2 ">
                 <div style={{ width: "10%" }}>
                   <img style={{ width: "100%" }} src={item?.brand_logo} />
                 </div>
               </td> */}
-              <td className="p-2">{item?.brand?.brand_name}</td>
-              <td className="p-2">{item?.fetch_count}</td>
-              <td className="p-2">
-                {item?.is_active ? "In-Stock" : "Out of Stock"}
-              </td>
-              <td className="p-2 ">
-                <Button text="Edit" onClick={() => handleEdit(item?.$id)} />
-              </td>
-            </tr>
-          ))}
+                <td className="p-2">{item?.brand?.brand_name}</td>
+                <td className="p-2">{item?.fetch_count}</td>
+                <td className="p-2">
+                  {item?.is_active ? "In-Stock" : "Out of Stock"}
+                </td>
+                <td className="p-2 ">
+                  <Button text="Edit" onClick={() => handleEdit(item?.$id)} />
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="p-2 mb-2 d-flex jcc">
-        {lenses && (
+        {lenses && lenses.length > 0 && (
           <Pagination
             className="text-theme"
             defaultCurrent={1}
             total={lenses?.count}
+            onChange={(e) => console.log(e)}
           />
         )}
       </div>

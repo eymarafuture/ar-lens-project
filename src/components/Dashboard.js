@@ -14,20 +14,23 @@ const Dashboard = () => {
   const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
+  const [brandStock, setBrandStock] = useState(0);
   const isMobile = useMediaQuery(portraitMobile);
 
   useEffect(() => {
-    const counts = lenses?.data?.reduce(
-      (acc, item) => {
-        if (item.is_active) {
-          acc.trueCount++;
-        } else {
-          acc.falseCount++;
-        }
-        return acc;
-      },
-      { trueCount: 0, falseCount: 0 }
-    );
+    const counts = lenses
+      ? lenses?.data?.reduce(
+          (acc, item) => {
+            if (item.is_active) {
+              acc.trueCount++;
+            } else {
+              acc.falseCount++;
+            }
+            return acc;
+          },
+          { trueCount: 0, falseCount: 0 }
+        )
+      : null;
     setLenseStock(counts?.trueCount);
     setLenseUstock(counts?.falseCount);
   }, [lenses]);
@@ -56,15 +59,15 @@ const Dashboard = () => {
           {[
             {
               name: "Lense Inventory (In-Stock)",
-              value: lenseStock,
+              value: lenseStock ? lenseStock : 0,
             },
             {
               name: "Lense Inventory (Out of Stock)",
-              value: lenseuStock,
+              value: lenseuStock ? lenseuStock : 0,
             },
             {
               name: "Brand Available",
-              value: 0,
+              value: brandStock ? brandStock : 0,
             },
           ].map((item, indx) => (
             <div
