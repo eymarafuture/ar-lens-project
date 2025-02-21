@@ -40,7 +40,7 @@ const Dashboard = () => {
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
     >
       <div className="bg-light p-2 h-100">
-        <div className="bg-light rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
+        <div className="bg-light text-theme rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
           {/* header section */}
           <IoIosMenu
             size={22}
@@ -75,9 +75,7 @@ const Dashboard = () => {
               className={`col-lg-3 col-md-6 col-6 ${isMobile ? "mb-4" : ""}`}
             >
               <div
-                className={`shadow d-flex flex-column jcb rounded-1 px-3 py-2 h-100 ${
-                  indx % 2 === 0 ? "bg-theme text-light" : "bg-light text-theme"
-                }`}
+                className={`shadow d-flex flex-column jcb rounded-1 px-3 py-2 h-100 bg-light text-midnight`}
               >
                 {isMobile ? <h6>{item.name}</h6> : <h5>{item.name}</h5>}
                 <h2 className="text-end">
@@ -91,7 +89,7 @@ const Dashboard = () => {
         </div>
 
         {/* inventory listing */}
-        <div className="py-2 mb-2 d-flex flex-column flex-md-row align-items-end jcb">
+        <div className="py-2 mb-2 d-flex text-theme flex-column flex-md-row align-items-end jcb">
           {isMobile ? (
             <h3 className="m-0 mb-3 w-100">Lense Management</h3>
           ) : (

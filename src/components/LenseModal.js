@@ -160,12 +160,14 @@ const LenseModal = () => {
                     placeholder="Enter Lense Name"
                     type="text"
                     value={name}
+                    className="text-midnight border-midnight"
                   />
                 </Col>,
 
                 <Col className="mb-3" key="lens_brand_Id" md={6}>
                   <label className="mb-2">Lense Brand</label>
                   <Select
+                    className="text-midnight border-midnight"
                     value={lens_brand_Id}
                     onChange={(e) => {
                       setLenseState({
@@ -201,6 +203,7 @@ const LenseModal = () => {
                         <Col key={indx} md={6}>
                           <label className="mb-2">{label}</label>
                           <Input
+                            className="text-midnight border-midnight"
                             type="file"
                             onChange={(e) => UploadImage(e, name)}
                           />

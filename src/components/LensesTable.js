@@ -26,7 +26,7 @@ const LensesTable = () => {
     <div className="w-100" style={{ overflowX: "auto" }}>
       <table className="mb-2 w-100">
         <thead>
-          <tr className="bg-theme text-light border-theme">
+          <tr className="bg-midnight text-light border-midnight">
             {[
               "Lense Logo",
               "Lense Name",
@@ -49,7 +49,7 @@ const LensesTable = () => {
         <tbody>
           {lenses &&
             lenses?.data?.map((item, indx) => (
-              <tr key={indx} className="border-theme">
+              <tr key={indx} className="border-lacecap">
                 <td className={`${isMobile ? "p-0" : "p-2"} w-25`}>
                   <div style={{ width: isMobile ? "80%" : "20%" }}>
                     <img
