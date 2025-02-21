@@ -17,12 +17,12 @@ const SibdeBarSection = ({ logout }) => {
       className={
         toggleMenu
           ? "d-none"
-          : `col-xl-2 col-lg-3 col-md-4 col-10 vh-100 ${
+          : `col-xl-2 col-lg-3 col-md-4 col-10 bg-midnight vh-100 ${
               isMobile && "position-absolute"
             }`
       }
     >
-      <div className="bg-light p-2 h-100">
+      <div className="bg-transparent p-2 h-100">
         <div className="p-2 mb-2 position-relative">
           {isMobile && (
             <LiaTimesSolid
@@ -65,12 +65,14 @@ const SibdeBarSection = ({ logout }) => {
         <div className="p-2 mt-4 d-flex flex-column">
           {sidebar.map((item) => (
             <Link
-              className="mb-2 text-decoration-none"
+              className={`mb-2 text-decoration-none ${
+                item.href === pathname
+                  ? "fw-bold text-theme"
+                  : "fw-normal text-light"
+              }`}
               key={item.name}
               href={item.href}
               style={{
-                color: item.href === pathname ? "var(--themeColor--)" : "#000",
-                fontWeight: item.href === pathname ? "bolder" : "lighter",
                 fontSize: "1rem",
               }}
               onClick={() => {

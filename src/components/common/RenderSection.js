@@ -96,10 +96,10 @@ const RenderSection = ({ children }) => {
                     />
                   </div>
                 </div>
-                <div className="col-lg-6">
+                <div className="col-lg-6 ">
                   <div className="h-100 d-flex aic jcc">
                     <form
-                      className={`shadow rounded 
+                      className={`shadow rounded bg-midnight 
                     p-2 p-md-4 h-75 ${isMobile ? "w-100" : "w-75"}  d-flex 
                     flex-column jcc gap-2`}
                     >
@@ -115,12 +115,14 @@ const RenderSection = ({ children }) => {
                       <Input
                         type="email"
                         placeholder="Email"
+                        className="text-light border-lacecap"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
                       <Input
                         type="password"
                         placeholder="Password"
+                        className="text-light border-lacecap"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />

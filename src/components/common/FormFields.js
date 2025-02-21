@@ -1,7 +1,7 @@
-export const Input = ({ type, placeholder, value, onChange }) => {
+export const Input = ({ type, placeholder, value, onChange, className }) => {
   return (
     <input
-      className="border border-secondary w-100 rounded p-2 bg-transparent"
+      className={`w-100 rounded p-2 bg-transparent ${className}`}
       type={type}
       placeholder={placeholder}
       value={value}
@@ -10,10 +10,17 @@ export const Input = ({ type, placeholder, value, onChange }) => {
   );
 };
 
-export const Select = ({ type, placeholder, value, onChange, options }) => {
+export const Select = ({
+  type,
+  placeholder,
+  value,
+  onChange,
+  options,
+  className,
+}) => {
   return (
     <select
-      className="border w-100 border-secondary rounded p-2 bg-transparent"
+      className={`w-100 rounded p-2 bg-transparent ${className}`}
       type={type}
       placeholder={placeholder}
       value={value}
@@ -28,7 +35,7 @@ export const Select = ({ type, placeholder, value, onChange, options }) => {
 export const Button = ({ onClick, text, w = "100%", isDisabled }) => {
   return (
     <button
-      className={`text-light fw-bold rounded p-2 border border-0 ${
+      className={`text-light fw-bold rounded p-2  border-0 ${
         isDisabled ? "bg-light" : "bg-theme"
       }`}
       type="button"
