@@ -94,7 +94,7 @@ export async function GET(req) {
     );
   } catch (err) {
     console.log("Error", err);
-    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
   }
 }
 
@@ -116,7 +116,7 @@ export async function POST(req) {
     );
   } catch (err) {
     console.log("Error", err);
-    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
   }
 }
 
@@ -141,13 +141,6 @@ export async function PUT(req) {
     );
   } catch (err) {
     console.log(err);
-    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
   }
 }
-// export async function DELETE() {
-//   try {
-//     return NextResponse.json({ message: "hello lenses" });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
