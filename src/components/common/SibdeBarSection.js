@@ -17,7 +17,7 @@ const SibdeBarSection = ({ logout }) => {
       className={
         toggleMenu
           ? "d-none"
-          : `col-xl-2 col-lg-3 col-md-4 col-10 bg-midnight vh-100 ${
+          : `col-xl-2 col-lg-3 col-md-4 col-10 bg-lacecap vh-100 ${
               isMobile && "position-absolute"
             }`
       }
@@ -68,7 +68,7 @@ const SibdeBarSection = ({ logout }) => {
               className={`mb-2 text-decoration-none ${
                 item.href === pathname
                   ? "fw-bold text-theme"
-                  : "fw-normal text-light"
+                  : "fw-normal text-midnight"
               }`}
               key={item.name}
               href={item.href}

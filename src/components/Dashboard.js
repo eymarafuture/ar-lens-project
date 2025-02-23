@@ -10,6 +10,7 @@ import LenseModal from "./LenseModal";
 
 import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
+import DashboardCard from "./DashboardCard";
 const Dashboard = () => {
   const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
@@ -70,21 +71,12 @@ const Dashboard = () => {
               value: brandStock ? brandStock : 0,
             },
           ].map((item, indx) => (
-            <div
-              key={indx}
-              className={`col-lg-3 col-md-6 col-6 ${isMobile ? "mb-4" : ""}`}
-            >
-              <div
-                className={`shadow d-flex flex-column jcb rounded-1 px-3 py-2 h-100 bg-light text-midnight`}
-              >
-                {isMobile ? <h6>{item.name}</h6> : <h5>{item.name}</h5>}
-                <h2 className="text-end">
-                  {item.value < 10
-                    ? `0${item.value}`
-                    : item?.value?.toLocaleString("en-US")}
-                </h2>
-              </div>
-            </div>
+            <DashboardCard
+              col="col-lg-3 col-md-6 col-6"
+              isMobile={isMobile}
+              indx={indx}
+              item={item}
+            />
           ))}
         </div>
 
