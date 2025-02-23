@@ -7,6 +7,9 @@ export const initialState = {
   toggleMenu: false,
   lenses: null,
   isLenseModal: false,
+
+  brands: null,
+  isbrandModal: false,
 };
 
 const reducer = (state, action) => {
@@ -41,6 +44,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLenseModal: !state.isLenseModal,
+      };
+
+    case "SET_BRANDS":
+      return {
+        ...state,
+        brands: action.payload,
+      };
+    case "BRAND_MODAL":
+      return {
+        ...state,
+        isbrandModal: !state.isbrandModal,
       };
     default:
       return state;

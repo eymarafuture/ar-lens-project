@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 const DashboardCard = ({ indx, col, isMobile, item }) => {
-  const [isHover, setIsHover] = useState(true);
+  const [isHover, setIsHover] = useState(false);
   return (
     <div key={indx} className={`${col} ${isMobile ? "mb-4" : ""}`}>
       <div

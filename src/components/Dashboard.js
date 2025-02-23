@@ -11,14 +11,21 @@ import LenseModal from "./LenseModal";
 import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
 import DashboardCard from "./DashboardCard";
+import { fetchAllBrands } from "@/endpoints";
 const Dashboard = () => {
-  const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
+  const [{ loggedInUser, toggleMenu, lenses, brands }, dispatch] =
+    useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
-  const [brandStock, setBrandStock] = useState(0);
+  // const [brandStock, setBrandStock] = useState(0);
   const isMobile = useMediaQuery(portraitMobile);
 
   useEffect(() => {
+    fetchAllBrands(dispatch, "api/brands");
+  }, []);
+
+  useEffect(() => {
+    console.log("hello");
     const counts = lenses
       ? lenses?.data?.reduce(
           (acc, item) => {
@@ -36,6 +43,7 @@ const Dashboard = () => {
     setLenseUstock(counts?.falseCount);
   }, [lenses]);
 
+  console.log(brands);
   return (
     <div
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
@@ -68,7 +76,7 @@ const Dashboard = () => {
             },
             {
               name: "Brand Available",
-              value: brandStock ? brandStock : 0,
+              value: brands ? brands?.count : 0,
             },
           ].map((item, indx) => (
             <DashboardCard

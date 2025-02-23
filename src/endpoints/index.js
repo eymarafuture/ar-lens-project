@@ -19,6 +19,25 @@ export const fetchLenses = async (dispatch, endpoint) => {
   }
 };
 
+export const fetchAllBrands = async (dispatch, endpoint) => {
+  try {
+    const ress = await axios.get(endpoint, {
+      headers: {
+        Authorization: process.env.NEXT_PUBLIC_API_KEY,
+      },
+    });
+
+    const data = ress.data.data;
+
+    dispatch({
+      type: "SET_BRANDS",
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const fetchLense = async (setter, endpoint) => {
   try {
     const ress = await axios.get(endpoint, {
