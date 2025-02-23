@@ -14,7 +14,7 @@ const LenseManagement = () => {
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
     >
       <div className="bg-light p-2 h-100">
-        <div className="bg-light rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
+        <div className="bg-light text-theme rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
           {/* header section */}
           <IoIosMenu
             size={22}

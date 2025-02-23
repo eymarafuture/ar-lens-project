@@ -9,6 +9,7 @@
 
 * {
   scroll-behavior: smooth;
+  transition: 0.3s ease-in-out;
 }
 
 .aic {
@@ -62,7 +63,9 @@ p {
 .border-lacecap {
   border: 2px solid var(--laceCap--) !important;
 }
-
+.bg-lacecap {
+  background-color: var(--laceCap--) !important;
+}
 td {
   color: var(--midNightBlue--) !important;
 }

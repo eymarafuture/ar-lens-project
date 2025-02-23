@@ -2,16 +2,19 @@ import { databases, ID } from "@/lib/appwrite";
 import { apiResponse } from "@/lib/helperFunc";
 import { NextResponse } from "next/server";
 import { authorization } from "../middleware";
+import { Query } from "appwrite";
 
 export async function GET(req) {
   try {
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const is_active = searchParams.get("is_active");
+    const is_use = searchParams.get("is_use");
     const $id = searchParams.get("id");
-    console.log(is_active, $id);
+    // console.log(is_active, $id);
     if (authorization(req)) {
-      if ($id) {
+      // get single lense
+      if ($id && !is_use) {
         const lense = await databases.getDocument(
           process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
           process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
@@ -32,9 +35,35 @@ export async function GET(req) {
           })
         );
       }
+
+      // fetch found
+      if ($id && is_use) {
+        let lense = await databases.getDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+          process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+          $id
+        );
+        if (lense) {
+          lense = { fetch_count: (Number(lense.fetch_count) + 1).toString() };
+        }
+        // return NextResponse.json(
+        //   apiResponse(true, "Lense use count sucessfully!", lense)
+        // );
+
+        const data = await databases.updateDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+          process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+          $id,
+          lense
+        );
+        return NextResponse.json(
+          apiResponse(true, "Lense use count sucessfully!", data)
+        );
+      }
       const lenses = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-        process.env.NEXT_PUBLIC_LENSE_COLLECTION // collectionId
+        process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+        is_active ? [Query.equal("is_active", true)] : [] // Filter for active lenses
       );
       const lens_brands = lenses.documents;
       // lens_brand_Id;
@@ -65,7 +94,7 @@ export async function GET(req) {
     );
   } catch (err) {
     console.log("Error", err);
-    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
   }
 }
 
@@ -87,7 +116,7 @@ export async function POST(req) {
     );
   } catch (err) {
     console.log("Error", err);
-    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
   }
 }
 
@@ -112,13 +141,6 @@ export async function PUT(req) {
     );
   } catch (err) {
     console.log(err);
-    return NextResponse.json(apiResponse(false, "Something went wrong", err));
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
   }
 }
-// export async function DELETE() {
-//   try {
-//     return NextResponse.json({ message: "hello lenses" });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }

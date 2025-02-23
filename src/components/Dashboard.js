@@ -10,14 +10,22 @@ import LenseModal from "./LenseModal";
 
 import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
+import DashboardCard from "./DashboardCard";
+import { fetchAllBrands } from "@/endpoints";
 const Dashboard = () => {
-  const [{ loggedInUser, toggleMenu, lenses }, dispatch] = useStateValue();
+  const [{ loggedInUser, toggleMenu, lenses, brands }, dispatch] =
+    useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
-  const [brandStock, setBrandStock] = useState(0);
+  // const [brandStock, setBrandStock] = useState(0);
   const isMobile = useMediaQuery(portraitMobile);
 
   useEffect(() => {
+    fetchAllBrands(dispatch, "api/brands");
+  }, []);
+
+  useEffect(() => {
+    console.log("hello");
     const counts = lenses
       ? lenses?.data?.reduce(
           (acc, item) => {
@@ -35,6 +43,7 @@ const Dashboard = () => {
     setLenseUstock(counts?.falseCount);
   }, [lenses]);
 
+  console.log(brands);
   return (
     <div
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
@@ -67,24 +76,15 @@ const Dashboard = () => {
             },
             {
               name: "Brand Available",
-              value: brandStock ? brandStock : 0,
+              value: brands ? brands?.count : 0,
             },
           ].map((item, indx) => (
-            <div
-              key={indx}
-              className={`col-lg-3 col-md-6 col-6 ${isMobile ? "mb-4" : ""}`}
-            >
-              <div
-                className={`shadow d-flex flex-column jcb rounded-1 px-3 py-2 h-100 bg-light text-midnight`}
-              >
-                {isMobile ? <h6>{item.name}</h6> : <h5>{item.name}</h5>}
-                <h2 className="text-end">
-                  {item.value < 10
-                    ? `0${item.value}`
-                    : item?.value?.toLocaleString("en-US")}
-                </h2>
-              </div>
-            </div>
+            <DashboardCard
+              col="col-lg-3 col-md-6 col-6"
+              isMobile={isMobile}
+              indx={indx}
+              item={item}
+            />
           ))}
         </div>
 

@@ -88,7 +88,7 @@ const LenseModal = () => {
   };
 
   useEffect(() => {
-    fetchBrands(setBrands, "/api/brands");
+    fetchBrands(setBrands, "/api/brands?is_active=true");
   }, []);
 
   useEffect(() => {
