@@ -16,7 +16,7 @@ const DashboardCard = ({ indx, col, isMobile, item }) => {
       >
         <div
           className="d-flex flex-column h-100 jcb px-3 py-2"
-          style={{ zIndex: 1 }}
+          // style={{ zIndex: 1 }}
         >
           {isMobile ? <h6>{item.name}</h6> : <h5>{item.name}</h5>}
           <h2 className="text-end">
@@ -30,7 +30,7 @@ const DashboardCard = ({ indx, col, isMobile, item }) => {
           className="bg-midnight position-absolute start-0 top-0 h-100"
           style={{
             width: isHover ? "100%" : "4%",
-            zIndex: 0, // Lower than the text
+            // zIndex: 0, // Lower than the text
             opacity: isHover ? 0 : 1,
           }}
         ></span>
