@@ -30,7 +30,7 @@ const RenderSection = ({ children }) => {
       });
       setAuthLoader(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       alert(err);
       setAuthLoader(false);
     }
@@ -45,7 +45,7 @@ const RenderSection = ({ children }) => {
         payload: null,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

@@ -5,11 +5,11 @@ export const initialState = {
       : false,
   toggleTheme: false,
   toggleMenu: false,
-  lenses: null,
+  lenses: [],
   isLenseModal: false,
 
-  brands: null,
-  isbrandModal: false,
+  brands: [],
+  isBrandModal: false,
 };
 
 const reducer = (state, action) => {
@@ -54,7 +54,7 @@ const reducer = (state, action) => {
     case "BRAND_MODAL":
       return {
         ...state,
-        isbrandModal: !state.isbrandModal,
+        isBrandModal: !state.isBrandModal,
       };
     default:
       return state;

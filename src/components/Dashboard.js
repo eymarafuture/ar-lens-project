@@ -12,11 +12,14 @@ import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
 import DashboardCard from "./DashboardCard";
 import { fetchAllBrands } from "@/endpoints";
+import BarChartComp from "./common/BarChart";
+import HeaderSection from "./common/HeaderSection";
 const Dashboard = () => {
   const [{ loggedInUser, toggleMenu, lenses, brands }, dispatch] =
     useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
+  const [topLenses, setTopLenses] = useState([]);
   // const [brandStock, setBrandStock] = useState(0);
   const isMobile = useMediaQuery(portraitMobile);
 
@@ -25,7 +28,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log("hello");
+    // console.log("hello");
     const counts = lenses
       ? lenses?.data?.reduce(
           (acc, item) => {
@@ -41,28 +44,32 @@ const Dashboard = () => {
       : null;
     setLenseStock(counts?.trueCount);
     setLenseUstock(counts?.falseCount);
+
+    let lensess =
+      lenses &&
+      lenses?.data
+        ?.filter(
+          (item) => item?.is_active === true && Number(item?.fetch_count) >= 10
+        )
+        ?.map((item) => ({
+          name: item?.name,
+          fetch_count: Number(item?.fetch_count),
+        }))
+        ?.slice(0, 10); // Limit to 10 records
+
+    // console.log(lensess, lenses);
+    if (lensess) {
+      setTopLenses(lensess);
+    }
   }, [lenses]);
 
-  console.log(brands);
+  // console.log(lenses);
   return (
     <div
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
     >
       <div className="bg-light p-2 h-100">
-        <div className="bg-light text-theme rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
-          {/* header section */}
-          <IoIosMenu
-            size={22}
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              dispatch({
-                type: "TOGGLE_MENU",
-              });
-            }}
-          />
-          {loggedInUser?.name}
-        </div>
-
+        <HeaderSection />
         {/* analytics */}
         <div className="row my-4">
           {[
@@ -84,12 +91,28 @@ const Dashboard = () => {
               isMobile={isMobile}
               indx={indx}
               item={item}
+              key={indx}
             />
           ))}
         </div>
-
-        {/* inventory listing */}
-        <div className="py-2 mb-2 d-flex text-theme flex-column flex-md-row align-items-end jcb">
+        {/* Info Graphics */}
+        <div className="row mb-2">
+          <div className="col-md-6">
+            {isMobile ? (
+              <h3 className="m-0 mb-3 w-100">Top Lenses</h3>
+            ) : (
+              <h2 className="m-0 w-100">Top Lenses</h2>
+            )}
+            {lenses && topLenses.length > 0 && (
+              <BarChartComp lensesData={topLenses} isMobile={isMobile} />
+            )}
+          </div>
+          {/* <div className="col-md-6">
+            <BarChartComp />
+          </div> */}
+        </div>
+        {/* lense listing */}
+        <div className="py-2 mb-2 d-flex text-midnight flex-column flex-md-row align-items-end jcb">
           {isMobile ? (
             <h3 className="m-0 mb-3 w-100">Lense Management</h3>
           ) : (

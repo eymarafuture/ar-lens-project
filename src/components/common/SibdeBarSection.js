@@ -17,7 +17,7 @@ const SibdeBarSection = ({ logout }) => {
       className={
         toggleMenu
           ? "d-none"
-          : `col-xl-2 col-lg-3 col-md-4 col-10 bg-lacecap vh-100 ${
+          : `col-xl-2 col-lg-3 col-md-4 col-10 bg-lacecap h-auto ${
               isMobile && "position-absolute z-1"
             }`
       }

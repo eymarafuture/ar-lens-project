@@ -1,8 +1,8 @@
 import React from "react";
-import LenseManagement from "@/components/LenseManagement";
+import BrandManagement from "@/components/BrandManagement";
 
 const BrandPage = () => {
-  return null;
+  return <BrandManagement />;
 };
 
 export default BrandPage;

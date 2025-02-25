@@ -4,11 +4,13 @@ import { useStateValue } from "@/lib/StateProvider";
 import React from "react";
 import { IoIosMenu } from "react-icons/io";
 import LensesTable from "./LensesTable";
-import { Button } from "./common/FormFields";
+
 import LenseModal from "./LenseModal";
 import HeaderSection from "./common/HeaderSection";
+import BrandTable from "./BrandTable";
+import BrandModal from "./BrandModal";
 
-const LenseManagement = () => {
+const BrandManagement = () => {
   const [{ loggedInUser, toggleMenu }, dispatch] = useStateValue();
   return (
     <div
@@ -16,7 +18,7 @@ const LenseManagement = () => {
     >
       <div className="bg-light p-2 h-100">
         {/* <div className="bg-light text-theme rounded-1 shadow p-2 px-3 d-flex aic jcb mb-2">
-         //// header section
+         /// header section
           <IoIosMenu
             size={22}
             style={{ cursor: "pointer" }}
@@ -28,18 +30,19 @@ const LenseManagement = () => {
           />
           {loggedInUser?.name}
         </div> */}
+
         <HeaderSection />
 
         {/* inventory listing */}
         <div className="py-2 mb-2 text-end">
           {/* <h2 className="m-0 w-100">Lense Management</h2> */}
           {/* <Button text="Add Lense" w="10rem" /> */}
-          <LenseModal />
+          <BrandModal />
         </div>
-        <LensesTable />
+        <BrandTable />
       </div>
     </div>
   );
 };
 
-export default LenseManagement;
+export default BrandManagement;

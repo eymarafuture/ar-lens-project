@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import FormModal from "./FormModal";
-import { Button, Input, Select, Switch } from "./common/FormFields";
+import { Button, Input, Switch } from "./common/FormFields";
 import { Col, Row } from "reactstrap";
-import axios from "axios";
+// import axios from "axios";
 import { useStateValue } from "@/lib/StateProvider";
 import { ID, storage } from "@/lib/appwrite";
-import { createLense, fetchBrands, fetchLense, updateLense } from "@/endpoints";
+// import { createLense, fetchBrands, fetchLense, updateLense } from "@/endpoints";
 import { portraitMobile } from "@/lib/mediaQueries";
 import { useMediaQuery } from "usehooks-ts";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import LoaderIcon from "./common/LoaderIcon";
-import Compressor from "compressorjs";
 
-const LenseModal = () => {
-  const [{ isLenseModal }, dispatch] = useStateValue();
+const BrandModal = () => {
+  const [{ isBrandModal }, dispatch] = useStateValue();
   const isMobile = useMediaQuery(portraitMobile);
   const [imgLoader, setImageLoader] = useState(false);
 
-  const [lenseState, setLenseState] = useState({
-    name: "",
-    lens_brand_Id: "",
-    lens_png: "",
-    lens_effect: "",
+  const [brandState, setBrandState] = useState({
+    brand_name: "",
+    brand_logo: "",
     is_active: true,
   });
-  const [brands, setBrands] = useState([]);
 
-  const { name, lens_brand_Id, is_active, lens_effect, lens_png } = lenseState;
+  const { brand_name, brand_logo, is_active } = brandState;
 
   const UploadImage = async (e, key) => {
     const file = e.target.files[0];
@@ -57,142 +53,105 @@ const LenseModal = () => {
         imageRes?.$id
       );
       setImageLoader(false);
-      if (key === "png") {
-        setLenseState({
-          ...lenseState,
-          lens_png: result?.href,
-          lens_effect: result?.href,
-        });
-      }
-      if (key === "effect") {
-        setLenseState({
-          ...lenseState,
-          lens_effect: result?.href,
-        });
-      }
+
+      setBrandState({
+        ...brandState,
+        brand_logo: result?.href,
+      });
     }
   };
 
-  const edit_lense = JSON.parse(localStorage.getItem("edit_lense"));
+  const edit_brand = JSON.parse(localStorage.getItem("edit_brand"));
 
   const handleSubmit = async () => {
     const payload = {
-      ...lenseState,
+      ...brandState,
     };
     // console.log(payload, edit_lense);
-    if (edit_lense) {
-      updateLense(dispatch, "/api/lenses", payload, edit_lense);
-    } else {
-      createLense(dispatch, "/api/lenses", payload);
-    }
+    // if (edit_brand) {
+    //   updateLense(dispatch, "/api/lenses", payload, edit_brand);
+    // } else {
+    //   createLense(dispatch, "/api/lenses", payload);
+    // }
   };
 
   useEffect(() => {
-    fetchBrands(setBrands, "/api/brands?is_active=true");
+    // fetchBrands(setBrands, "/api/brands?is_active=true");
   }, []);
 
   useEffect(() => {
-    if (isLenseModal && edit_lense) {
-      fetchLense(setLenseState, `/api/lenses?id=${edit_lense}`);
-    } else {
-      setLenseState({
-        name: "",
-        lens_brand_Id: "",
-        lens_png: "",
-        lens_effect: "",
-        is_active: true,
-      });
-    }
-  }, [isLenseModal]);
+    // if (isBrandModal && edit_brand) {
+    //   fetchLense(setBrandState, `/api/lenses?id=${edit_brand}`);
+    // } else {
+    //   setBrandState({
+    //     brand_name: "",
+    //     brand_logo: "",
+    //     is_active: true,
+    //   });
+    // }
+  }, [isBrandModal]);
   const router = useRouter();
   const pathname = usePathname();
   return (
     <>
       <div className="d-flex gap-2 aic justify-content-end">
-        {pathname !== "/lense-management" && (
+        {pathname !== "/brand-management" && (
           <Button
-            text="View Lenses"
+            text="View Brands"
             w={isMobile ? "7rem" : "9rem"}
             onClick={() => {
-              router.push("/lense-management");
+              router.push("/brand-management");
             }}
           />
         )}
         <Button
-          text="Add Lense"
+          text="Add Brand"
           w={isMobile ? "7rem" : "9rem"}
           onClick={() => {
             dispatch({
-              type: "LENSE_MODAL",
+              type: "BRAND_MODAL",
             });
           }}
         />
       </div>
 
       <FormModal
-        isDisabled={
-          !lens_effect || !lens_png || !name || !lens_brand_Id ? true : false
-        }
+        isDisabled={!brand_name || !brand_logo ? true : false}
         onClose={() => {
-          localStorage.removeItem("edit_lense");
+          localStorage.removeItem("edit_brand");
           dispatch({
-            type: "LENSE_MODAL",
+            type: "BRAND_MODAL",
           });
         }}
-        btnText={edit_lense ? "Update Lense" : "Add Lense"}
+        btnText={edit_brand ? "Update Brand" : "Add Brand"}
         handleClick={handleSubmit}
-        title={edit_lense ? "Edit Lense" : "Add New Lense"}
-        isOpen={isLenseModal}
+        title={edit_brand ? "Edit Brand" : "Add New Brand"}
+        isOpen={isBrandModal}
         // setIsOpen={setIsOpen}
         fields={
-          edit_lense && !lenseState.name
+          edit_brand && !brand_name
             ? []
             : [
                 <Col className="mb-3" md={6} key="name">
-                  <label className="mb-2">Lense Name</label>
+                  <label className="mb-2">Brand Name</label>
                   <Input
                     onChange={(e) => {
-                      setLenseState({
-                        ...lenseState,
-                        name: e.target.value,
+                      setBrandState({
+                        ...brandState,
+                        brand_name: e.target.value,
                       });
                     }}
-                    placeholder="Enter Lense Name"
+                    placeholder="Enter Brand Name"
                     type="text"
-                    value={name}
+                    value={brand_name}
                     className="text-midnight border-midnight"
-                  />
-                </Col>,
-
-                <Col className="mb-3" key="lens_brand_Id" md={6}>
-                  <label className="mb-2">Lense Brand</label>
-                  <Select
-                    className="text-midnight border-midnight"
-                    value={lens_brand_Id}
-                    onChange={(e) => {
-                      setLenseState({
-                        ...lenseState,
-                        lens_brand_Id: e.target.value,
-                      });
-                    }}
-                    options={brands.map((item) => {
-                      return (
-                        <option
-                          className="options"
-                          key={item.$id}
-                          value={item.$id}
-                        >
-                          {item.brand_name}
-                        </option>
-                      );
-                    })}
                   />
                 </Col>,
 
                 <Col md={12} className="mb-3" key="brand_media">
                   <Row>
                     {[
-                      { name: "png", img: lens_png, label: "Lense Image" },
+                      { name: "png", img: brand_logo, label: "Brand Image" },
                       // {
                       //   name: "effect",
                       //   img: lens_effect,
@@ -231,8 +190,8 @@ const LenseModal = () => {
                   <Switch
                     value={is_active}
                     onChange={(e) => {
-                      setLenseState({
-                        ...lenseState,
+                      setBrandState({
+                        ...brandState,
                         is_active: e.target.checked,
                       });
                     }}
@@ -245,4 +204,4 @@ const LenseModal = () => {
   );
 };
 
-export default LenseModal;
+export default BrandModal;
