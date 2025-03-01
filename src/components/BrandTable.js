@@ -14,14 +14,15 @@ const BrandTable = () => {
 
   const handleEdit = (id) => {
     localStorage.setItem("edit_brand", JSON.stringify(id));
-    // dispatch({ type: "BRAND_MODAL" });
+    dispatch({ type: "BRAND_MODAL" });
   };
 
   useEffect(() => {
+    /// All Lenses For Listing
     fetchAllBrands(dispatch, "/api/brands");
   }, []);
 
-  //   console.log(brands);
+  console.log(brands);
   //   return;
 
   return (
@@ -72,7 +73,7 @@ const BrandTable = () => {
         </tbody>
       </table>
       <div className="p-2 mb-2 d-flex jcc">
-        {brands && brands.length > 0 && (
+        {brands && (
           <Pagination
             className="text-theme"
             defaultCurrent={1}

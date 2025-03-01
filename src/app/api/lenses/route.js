@@ -11,6 +11,8 @@ export async function GET(req) {
     const is_active = searchParams.get("is_active");
     const is_use = searchParams.get("is_use");
     const $id = searchParams.get("id");
+    // const limit = searchParams.get("limit");
+    const page = searchParams.get("page");
     // console.log(is_active, $id);
     if (authorization(req)) {
       // get single lense
@@ -43,11 +45,25 @@ export async function GET(req) {
           process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
           $id
         );
+        let brand;
+        let brand_id;
         if (lense) {
-          lense = { fetch_count: (Number(lense.fetch_count) + 1).toString() };
+          // console.log(lense);
+          brand_id = lense?.lens_brand_Id;
+          brand = await databases.getDocument(
+            process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+            process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
+            brand_id
+          );
+          lense = { fetch_count: (Number(lense?.fetch_count) + 1).toString() };
+          brand = {
+            brand_fetch_count: (
+              Number(brand?.brand_fetch_count) + 1
+            ).toString(),
+          };
         }
         // return NextResponse.json(
-        //   apiResponse(true, "Lense use count sucessfully!", lense)
+        //   apiResponse(true, "Lense use count sucessfully!", { lense, brand })
         // );
 
         const data = await databases.updateDocument(
@@ -56,14 +72,34 @@ export async function GET(req) {
           $id,
           lense
         );
+
+        await databases.updateDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+          process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
+          brand_id,
+          brand
+        );
         return NextResponse.json(
           apiResponse(true, "Lense use count sucessfully!", data)
         );
       }
+
+      const limit = 5; // Number of documents per page
+      // const page = 1; // Current page (starting from 1)
+
+      // Calculate offset based on current page
+      const offset = (page - 1) * limit;
       const lenses = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
         process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
-        is_active ? [Query.equal("is_active", true)] : [] // Filter for active lenses
+        is_active
+          ? [Query.equal("is_active", true)] // Filter for active lenses
+          : page
+          ? [
+              Query.limit(limit), // Limit the number of results
+              Query.offset(offset), // Skip the number of results specified by offset
+            ]
+          : []
       );
       const lens_brands = lenses.documents;
       // lens_brand_Id;

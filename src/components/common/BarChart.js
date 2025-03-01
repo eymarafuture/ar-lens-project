@@ -1,6 +1,6 @@
 import { BarChart } from "@mui/x-charts";
 import React from "react";
-const BarChartComp = ({ lensesData, isMobile }) => {
+const BarChartComp = ({ lensesData, data }) => {
   //   console.log(lensesData);
   const colors = [
     getComputedStyle(document.documentElement).getPropertyValue(
@@ -11,6 +11,7 @@ const BarChartComp = ({ lensesData, isMobile }) => {
   return (
     <div>
       <BarChart
+        loading={!data ? true : false}
         xAxis={[
           { scaleType: "band", data: lensesData.map((lens) => lens.name) },
         ]}
@@ -21,7 +22,7 @@ const BarChartComp = ({ lensesData, isMobile }) => {
           },
         ]}
         // width={100}
-        width={isMobile ? 390 : 500}
+        // width={100}
         borderRadius={5}
         barLabel="value"
         height={300}

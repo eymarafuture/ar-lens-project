@@ -10,6 +10,7 @@ import { portraitMobile } from "@/lib/mediaQueries";
 import { useMediaQuery } from "usehooks-ts";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import LoaderIcon from "./common/LoaderIcon";
+import { createBrand, fetchBrand, updateBrand } from "@/endpoints";
 
 const BrandModal = () => {
   const [{ isBrandModal }, dispatch] = useStateValue();
@@ -67,28 +68,24 @@ const BrandModal = () => {
     const payload = {
       ...brandState,
     };
-    // console.log(payload, edit_lense);
-    // if (edit_brand) {
-    //   updateLense(dispatch, "/api/lenses", payload, edit_brand);
-    // } else {
-    //   createLense(dispatch, "/api/lenses", payload);
-    // }
+    console.log(payload, edit_brand);
+    if (edit_brand) {
+      updateBrand(dispatch, "/api/brands", payload, edit_brand);
+    } else {
+      createBrand(dispatch, "/api/brands", payload);
+    }
   };
 
   useEffect(() => {
-    // fetchBrands(setBrands, "/api/brands?is_active=true");
-  }, []);
-
-  useEffect(() => {
-    // if (isBrandModal && edit_brand) {
-    //   fetchLense(setBrandState, `/api/lenses?id=${edit_brand}`);
-    // } else {
-    //   setBrandState({
-    //     brand_name: "",
-    //     brand_logo: "",
-    //     is_active: true,
-    //   });
-    // }
+    if (isBrandModal && edit_brand) {
+      fetchBrand(setBrandState, `/api/brands?id=${edit_brand}`);
+    } else {
+      setBrandState({
+        brand_name: "",
+        brand_logo: "",
+        is_active: true,
+      });
+    }
   }, [isBrandModal]);
   const router = useRouter();
   const pathname = usePathname();
@@ -148,7 +145,7 @@ const BrandModal = () => {
                   />
                 </Col>,
 
-                <Col md={12} className="mb-3" key="brand_media">
+                <Col md={6} className="mb-3" key="brand_media">
                   <Row>
                     {[
                       { name: "png", img: brand_logo, label: "Brand Image" },
@@ -159,7 +156,7 @@ const BrandModal = () => {
                       // },
                     ].map(({ name, img, label }, indx) => {
                       return (
-                        <Col key={indx} md={6}>
+                        <Col key={indx} md={12}>
                           <label className="mb-2">{label}</label>
                           <Input
                             className="text-midnight border-midnight"

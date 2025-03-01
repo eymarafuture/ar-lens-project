@@ -1,36 +1,38 @@
 "use client";
-
-import { useStateValue } from "@/lib/StateProvider";
-
 import React, { useEffect, useState } from "react";
-import { IoIosMenu } from "react-icons/io";
-
+import { useStateValue } from "@/lib/StateProvider";
 import LensesTable from "./LensesTable";
 import LenseModal from "./LenseModal";
 
 import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
 import DashboardCard from "./DashboardCard";
-import { fetchAllBrands } from "@/endpoints";
+import { fetchBrands, fetchLenses } from "@/endpoints";
 import BarChartComp from "./common/BarChart";
 import HeaderSection from "./common/HeaderSection";
+
 const Dashboard = () => {
-  const [{ loggedInUser, toggleMenu, lenses, brands }, dispatch] =
-    useStateValue();
+  const [{ toggleMenu }] = useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
   const [topLenses, setTopLenses] = useState([]);
+  const [topBrands, setTopBrands] = useState([]);
+  const [lenses, setLenses] = useState(null);
+  const [brands, setBrands] = useState(null);
   // const [brandStock, setBrandStock] = useState(0);
   const isMobile = useMediaQuery(portraitMobile);
 
+  // console.log(lenses);
+
   useEffect(() => {
-    fetchAllBrands(dispatch, "api/brands");
+    fetchLenses(setLenses, "/api/lenses");
+    fetchBrands(setBrands, "/api/brands");
   }, []);
 
   useEffect(() => {
     // console.log("hello");
     const counts = lenses
-      ? lenses?.data?.reduce(
+      ? lenses?.reduce(
           (acc, item) => {
             if (item.is_active) {
               acc.trueCount++;
@@ -47,7 +49,7 @@ const Dashboard = () => {
 
     let lensess =
       lenses &&
-      lenses?.data
+      lenses
         ?.filter(
           (item) => item?.is_active === true && Number(item?.fetch_count) >= 10
         )
@@ -63,12 +65,29 @@ const Dashboard = () => {
     }
   }, [lenses]);
 
-  // console.log(lenses);
+  useEffect(() => {
+    let brandss =
+      brands &&
+      brands
+        ?.filter((item) => item?.is_active === true)
+        ?.map((item) => ({
+          name: item?.brand_name,
+          fetch_count: Number(item?.brand_fetch_count),
+        }))
+        ?.slice(0, 10); // Limit to 10 records
+
+    // console.log(lensess, lenses);
+    if (brandss) {
+      setTopBrands(brandss);
+    }
+  }, [brands]);
+
+  // console.log(lenseStock, lenseuStock, brands);
   return (
     <div
       className={toggleMenu ? "col-12" : "col-xl-10 col-lg-9 col-md-8 col-12"}
     >
-      <div className="bg-light p-2 h-100">
+      <div className="bg-transparent p-2 h-100">
         <HeaderSection />
         {/* analytics */}
         <div className="row my-4">
@@ -83,7 +102,7 @@ const Dashboard = () => {
             },
             {
               name: "Brand Available",
-              value: brands ? brands?.count : 0,
+              value: brands ? brands?.length : 0,
             },
           ].map((item, indx) => (
             <DashboardCard
@@ -98,14 +117,25 @@ const Dashboard = () => {
         {/* Info Graphics */}
         <div className="row mb-2">
           <div className="col-md-6">
-            {isMobile ? (
-              <h3 className="m-0 mb-3 w-100">Top Lenses</h3>
-            ) : (
-              <h2 className="m-0 w-100">Top Lenses</h2>
-            )}
-            {lenses && topLenses.length > 0 && (
-              <BarChartComp lensesData={topLenses} isMobile={isMobile} />
-            )}
+            <div>
+              {isMobile ? (
+                <h3 className="m-0 mb-3 w-100">Top Lenses</h3>
+              ) : (
+                <h2 className="m-0 w-100">Top Lenses</h2>
+              )}
+
+              <BarChartComp data={lenses} lensesData={topLenses} />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div>
+              {isMobile ? (
+                <h3 className="m-0 mb-3 w-100">Top Brands</h3>
+              ) : (
+                <h2 className="m-0 w-100">Top Brands</h2>
+              )}
+              <BarChartComp data={brands} lensesData={topBrands} />
+            </div>
           </div>
           {/* <div className="col-md-6">
             <BarChartComp />
