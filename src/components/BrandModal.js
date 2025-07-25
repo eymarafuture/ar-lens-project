@@ -129,72 +129,72 @@ const BrandModal = () => {
           edit_brand && !brand_name
             ? []
             : [
-                <Col className="mb-3" md={6} key="name">
-                  <label className="mb-2">Brand Name</label>
-                  <Input
-                    onChange={(e) => {
-                      setBrandState({
-                        ...brandState,
-                        brand_name: e.target.value,
-                      });
-                    }}
-                    placeholder="Enter Brand Name"
-                    type="text"
-                    value={brand_name}
-                    className="text-midnight border-midnight"
-                  />
-                </Col>,
+              <Col className="mb-3" md={6} key="name">
+                <label className="mb-2">Brand Name</label>
+                <Input
+                  onChange={(e) => {
+                    setBrandState({
+                      ...brandState,
+                      brand_name: e.target.value,
+                    });
+                  }}
+                  placeholder="Enter Brand Name"
+                  type="text"
+                  value={brand_name}
+                  className="text-midnight border-midnight"
+                />
+              </Col>,
 
-                <Col md={6} className="mb-3" key="brand_media">
-                  <Row>
-                    {[
-                      { name: "png", img: brand_logo, label: "Brand Image" },
-                      // {
-                      //   name: "effect",
-                      //   img: lens_effect,
-                      //   label: "Lense Effect (DeepAR)",
-                      // },
-                    ].map(({ name, img, label }, indx) => {
-                      return (
-                        <Col key={indx} md={12}>
-                          <label className="mb-2">{label}</label>
-                          <Input
-                            className="text-midnight border-midnight"
-                            type="file"
-                            onChange={(e) => UploadImage(e, name)}
-                          />
-                          {imgLoader ? (
-                            <div className="mt-2 d-flex aic">
-                              <LoaderIcon /> Uploading...
-                            </div>
-                          ) : (
-                            <>
-                              {name === "png" && (
-                                <div style={{ width: "20%" }}>
-                                  <img src={img} style={{ width: "100%" }} />
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </Col>,
+              <Col md={6} className="mb-3" key="brand_media">
+                <Row>
+                  {[
+                    { name: "png", img: brand_logo, label: "Brand Image" },
+                    // {
+                    //   name: "effect",
+                    //   img: lens_effect,
+                    //   label: "Lense Effect (DeepAR)",
+                    // },
+                  ].map(({ name, img, label }, indx) => {
+                    return (
+                      <Col key={indx} md={12}>
+                        <label className="mb-2">{label}</label>
+                        <Input
+                          className="text-midnight border-midnight"
+                          type="file"
+                          onChange={(e) => UploadImage(e, name)}
+                        />
+                        {imgLoader ? (
+                          <div className="mt-2 d-flex aic">
+                            <LoaderIcon /> Uploading...
+                          </div>
+                        ) : (
+                          <>
+                            {name === "png" && (
+                              <div style={{ width: "20%" }}>
+                                <img src={img} style={{ width: "100%" }} />
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </Col>,
 
-                <Col className="mb-3 d-flex aic" key="brand_active" md={6}>
-                  <label className="me-2">Active</label>
-                  <Switch
-                    value={is_active}
-                    onChange={(e) => {
-                      setBrandState({
-                        ...brandState,
-                        is_active: e.target.checked,
-                      });
-                    }}
-                  ></Switch>
-                </Col>,
-              ]
+              <Col className="mb-3 d-flex aic" key="brand_active" md={6}>
+                <label className="me-2">Active</label>
+                <Switch
+                  value={is_active}
+                  onChange={(e) => {
+                    setBrandState({
+                      ...brandState,
+                      is_active: e.target.checked,
+                    });
+                  }}
+                ></Switch>
+              </Col>,
+            ]
         }
       />
     </>

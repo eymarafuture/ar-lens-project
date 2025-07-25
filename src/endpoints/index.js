@@ -88,7 +88,7 @@ export const fetchBrand = async (setter, endpoint) => {
   }
 };
 
-export const createLense = async (dispatch, endpoint, payload) => {
+export const createLense = async (dispatch, endpoint, payload, page, limit) => {
   try {
     await axios.post(endpoint, payload, {
       headers: {
@@ -97,7 +97,7 @@ export const createLense = async (dispatch, endpoint, payload) => {
     });
 
     dispatch({ type: "LENSE_MODAL" });
-    fetchAllLenses(dispatch, endpoint);
+    fetchAllLenses(dispatch, `${endpoint}?page=${page}&limit=${limit}`);
   } catch (err) {
     console.log(err);
   }
@@ -118,7 +118,7 @@ export const createBrand = async (dispatch, endpoint, payload) => {
   }
 };
 
-export const updateLense = async (dispatch, endpoint, payload, edit_lense) => {
+export const updateLense = async (dispatch, endpoint, payload, edit_lense, page, limit) => {
   try {
     await axios.put(`${endpoint}?id=${edit_lense}`, payload, {
       headers: {
@@ -128,7 +128,7 @@ export const updateLense = async (dispatch, endpoint, payload, edit_lense) => {
 
     localStorage.removeItem("edit_lense");
     dispatch({ type: "LENSE_MODAL" });
-    fetchAllLenses(dispatch, endpoint);
+    fetchAllLenses(dispatch, `${endpoint}?page=${page}&limit=${limit}`);
   } catch (err) {
     console.log(err);
   }
@@ -146,6 +146,24 @@ export const updateBrand = async (dispatch, endpoint, payload, edit_brand) => {
     dispatch({ type: "BRAND_MODAL" });
     fetchAllBrands(dispatch, endpoint);
   } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteLense = async (dispatch, endpoint, id, setLoading, page, limit) => {
+  try {
+    setLoading && setLoading(true);
+    await axios.delete(`${endpoint}?id=${id}`, {
+      headers: {
+        Authorization: process.env.NEXT_PUBLIC_API_KEY,
+      },
+    });
+    dispatch({
+      type: "REFRESH_PAGE"
+    })
+    fetchAllLenses(dispatch, `${endpoint}?page=${page}&limit=${limit}`, setLoading);
+  } catch (err) {
+    setLoading && setLoading(false);
     console.log(err);
   }
 };

@@ -8,11 +8,10 @@ import { ID, storage } from "@/lib/appwrite";
 import { createLense, fetchBrands, fetchLense, updateLense } from "@/endpoints";
 import { portraitMobile } from "@/lib/mediaQueries";
 import { useMediaQuery } from "usehooks-ts";
-import { useRouter, usePathname, useParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import LoaderIcon from "./common/LoaderIcon";
-import Compressor from "compressorjs";
 
-const LenseModal = () => {
+const LenseModal = ({ limit, setLimit, page, setPage }) => {
   const [{ isLenseModal }, dispatch] = useStateValue();
   const isMobile = useMediaQuery(portraitMobile);
   const [imgLoader, setImageLoader] = useState(false);
@@ -81,9 +80,13 @@ const LenseModal = () => {
     };
     // console.log(payload, edit_lense);
     if (edit_lense) {
-      updateLense(dispatch, "/api/lenses", payload, edit_lense);
+      updateLense(dispatch, "/api/lenses", payload, edit_lense, page,
+        limit
+      );
     } else {
-      createLense(dispatch, "/api/lenses", payload);
+      createLense(dispatch, "/api/lenses", payload, page,
+        limit
+      );
     }
   };
 
@@ -148,97 +151,97 @@ const LenseModal = () => {
           edit_lense && !lenseState.name
             ? []
             : [
-                <Col className="mb-3" md={6} key="name">
-                  <label className="mb-2">Lense Name</label>
-                  <Input
-                    onChange={(e) => {
-                      setLenseState({
-                        ...lenseState,
-                        name: e.target.value,
-                      });
-                    }}
-                    placeholder="Enter Lense Name"
-                    type="text"
-                    value={name}
-                    className="text-midnight border-midnight"
-                  />
-                </Col>,
+              <Col className="mb-3" md={6} key="name">
+                <label className="mb-2">Lense Name</label>
+                <Input
+                  onChange={(e) => {
+                    setLenseState({
+                      ...lenseState,
+                      name: e.target.value,
+                    });
+                  }}
+                  placeholder="Enter Lense Name"
+                  type="text"
+                  value={name}
+                  className="text-midnight border-midnight"
+                />
+              </Col>,
 
-                <Col className="mb-3" key="lens_brand_Id" md={6}>
-                  <label className="mb-2">Lense Brand</label>
-                  <Select
-                    className="text-midnight border-midnight"
-                    value={lens_brand_Id}
-                    onChange={(e) => {
-                      setLenseState({
-                        ...lenseState,
-                        lens_brand_Id: e.target.value,
-                      });
-                    }}
-                    options={brands.map((item) => {
-                      return (
-                        <option
-                          className="options"
-                          key={item.$id}
-                          value={item.$id}
-                        >
-                          {item.brand_name}
-                        </option>
-                      );
-                    })}
-                  />
-                </Col>,
+              <Col className="mb-3" key="lens_brand_Id" md={6}>
+                <label className="mb-2">Lense Brand</label>
+                <Select
+                  className="text-midnight border-midnight"
+                  value={lens_brand_Id}
+                  onChange={(e) => {
+                    setLenseState({
+                      ...lenseState,
+                      lens_brand_Id: e.target.value,
+                    });
+                  }}
+                  options={brands?.map((item) => {
+                    return (
+                      <option
+                        className="options"
+                        key={item.$id}
+                        value={item.$id}
+                      >
+                        {item.brand_name}
+                      </option>
+                    );
+                  })}
+                />
+              </Col>,
 
-                <Col md={12} className="mb-3" key="brand_media">
-                  <Row>
-                    {[
-                      { name: "png", img: lens_png, label: "Lense Image" },
-                      // {
-                      //   name: "effect",
-                      //   img: lens_effect,
-                      //   label: "Lense Effect (DeepAR)",
-                      // },
-                    ].map(({ name, img, label }, indx) => {
-                      return (
-                        <Col key={indx} md={6}>
-                          <label className="mb-2">{label}</label>
-                          <Input
-                            className="text-midnight border-midnight"
-                            type="file"
-                            onChange={(e) => UploadImage(e, name)}
-                          />
-                          {imgLoader ? (
-                            <div className="mt-2 d-flex aic">
-                              <LoaderIcon /> Uploading...
-                            </div>
-                          ) : (
-                            <>
-                              {name === "png" && (
-                                <div style={{ width: "20%" }}>
-                                  <img src={img} style={{ width: "100%" }} />
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </Col>,
+              <Col md={12} className="mb-3" key="brand_media">
+                <Row>
+                  {[
+                    { name: "png", img: lens_png, label: "Lense Image" },
+                    // {
+                    //   name: "effect",
+                    //   img: lens_effect,
+                    //   label: "Lense Effect (DeepAR)",
+                    // },
+                  ].map(({ name, img, label }, indx) => {
+                    return (
+                      <Col key={indx} md={6}>
+                        <label className="mb-2">{label}</label>
+                        <Input
+                          className="text-midnight border-midnight"
+                          type="file"
+                          onChange={(e) => UploadImage(e, name)}
+                        />
+                        {imgLoader ? (
+                          <div className="mt-2 d-flex aic">
+                            <LoaderIcon /> Uploading...
+                          </div>
+                        ) : (
+                          <>
+                            {name === "png" && (
+                              <div style={{ width: "20%" }}>
+                                <img src={img} style={{ width: "100%" }} />
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </Col>,
 
-                <Col className="mb-3 d-flex aic" key="brand_active" md={6}>
-                  <label className="me-2">Active</label>
-                  <Switch
-                    value={is_active}
-                    onChange={(e) => {
-                      setLenseState({
-                        ...lenseState,
-                        is_active: e.target.checked,
-                      });
-                    }}
-                  ></Switch>
-                </Col>,
-              ]
+              <Col className="mb-3 d-flex aic" key="brand_active" md={6}>
+                <label className="me-2">Active</label>
+                <Switch
+                  value={is_active}
+                  onChange={(e) => {
+                    setLenseState({
+                      ...lenseState,
+                      is_active: e.target.checked,
+                    });
+                  }}
+                ></Switch>
+              </Col>,
+            ]
         }
       />
     </>

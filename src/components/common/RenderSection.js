@@ -9,6 +9,7 @@ import SibdeBarSmall from "./SideBarSmall";
 import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
 import HeaderSection from "./HeaderSection";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 const RenderSection = ({ children }) => {
   const isMobile = useMediaQuery(portraitMobile);
@@ -16,6 +17,7 @@ const RenderSection = ({ children }) => {
   const [password, setPassword] = useState("");
   const [loader, setLoader] = useState(true);
   const [authLoader, setAuthLoader] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [{ loggedInUser }, dispatch] = useStateValue();
 
@@ -112,6 +114,8 @@ const RenderSection = ({ children }) => {
                         />
                       </div>
 
+
+
                       <Input
                         type="email"
                         placeholder="Email"
@@ -119,13 +123,24 @@ const RenderSection = ({ children }) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        className="text-midnight border-lacecap"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
+                      <div className="position-relative">
+                        <span
+                          style={{
+                            color: "#1e1e1e",
+                            cursor: "pointer"
+                          }}
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="position-absolute end-0 mt-2 me-2">
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Password"
+                          className="text-midnight border-lacecap"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </div>
 
                       <Button
                         onClick={login}

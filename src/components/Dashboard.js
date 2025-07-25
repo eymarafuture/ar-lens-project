@@ -12,13 +12,16 @@ import BarChartComp from "./common/BarChart";
 import HeaderSection from "./common/HeaderSection";
 
 const Dashboard = () => {
-  const [{ toggleMenu }] = useStateValue();
+  const [{ toggleMenu, isLenseModal, refreshPage }] = useStateValue();
   const [lenseStock, setLenseStock] = useState(0);
   const [lenseuStock, setLenseUstock] = useState(0);
   const [topLenses, setTopLenses] = useState([]);
   const [topBrands, setTopBrands] = useState([]);
   const [lenses, setLenses] = useState(null);
   const [brands, setBrands] = useState(null);
+  const [page, setPage] = useState(1);
+  // console.log(pathname)
+  const [limit, setLimit] = useState(5);
   // const [brandStock, setBrandStock] = useState(0);
   const isMobile = useMediaQuery(portraitMobile);
 
@@ -27,22 +30,22 @@ const Dashboard = () => {
   useEffect(() => {
     fetchLenses(setLenses, "/api/lenses");
     fetchBrands(setBrands, "/api/brands");
-  }, []);
+  }, [isLenseModal, refreshPage]);
 
   useEffect(() => {
     // console.log("hello");
     const counts = lenses
       ? lenses?.reduce(
-          (acc, item) => {
-            if (item.is_active) {
-              acc.trueCount++;
-            } else {
-              acc.falseCount++;
-            }
-            return acc;
-          },
-          { trueCount: 0, falseCount: 0 }
-        )
+        (acc, item) => {
+          if (item.is_active) {
+            acc.trueCount++;
+          } else {
+            acc.falseCount++;
+          }
+          return acc;
+        },
+        { trueCount: 0, falseCount: 0 }
+      )
       : null;
     setLenseStock(counts?.trueCount);
     setLenseUstock(counts?.falseCount);
@@ -148,9 +151,11 @@ const Dashboard = () => {
           ) : (
             <h2 className="m-0 w-100">Lense Management</h2>
           )}
-          <LenseModal />
+          <LenseModal
+            limit={limit} setLimit={setLimit} setPage={setPage} page={page}
+          />
         </div>
-        <LensesTable />
+        <LensesTable limit={limit} setLimit={setLimit} setPage={setPage} page={page} />
       </div>
     </div>
   );

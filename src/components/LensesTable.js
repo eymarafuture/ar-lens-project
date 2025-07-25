@@ -1,19 +1,17 @@
 import { useStateValue } from "@/lib/StateProvider";
 import React, { useEffect, useState } from "react";
 import { Button } from "./common/FormFields";
-import Image from "next/image";
-import { fetchAllLenses, updateLense } from "@/endpoints";
+import { fetchAllLenses, updateLense, deleteLense } from "@/endpoints";
 import { useMediaQuery } from "usehooks-ts";
 import { portraitMobile } from "@/lib/mediaQueries";
 import { Pagination } from "antd";
 import LoaderIcon from "./common/LoaderIcon";
+import Swal from "sweetalert2";
 
-const LensesTable = () => {
+const LensesTable = ({ limit, page, setPage, setLimit }) => {
   const [{ lenses }, dispatch] = useStateValue();
   const isMobile = useMediaQuery(portraitMobile);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  // const [limit, setLimit] = useState(10);
 
   // console.log(lenses);
 
@@ -22,9 +20,31 @@ const LensesTable = () => {
     dispatch({ type: "LENSE_MODAL" });
   };
 
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#020035",
+      cancelButtonColor: "#ed4b00",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteLense(dispatch, "/api/lenses", id, setLoading, page, limit).then(() => {
+          Swal.fire({
+            title: "Deleted!", text: "Lense has been deleted.", icon: "success",
+            confirmButtonColor: "#020035",
+            confirmButtonText: "Close",
+          });
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     setLoading(true);
-    fetchAllLenses(dispatch, `/api/lenses?page=${page}`, setLoading);
+    fetchAllLenses(dispatch, `/api/lenses?page=${page}&limit=${limit}`, setLoading);
   }, [page]);
 
   return (
@@ -39,7 +59,7 @@ const LensesTable = () => {
             <thead>
               <tr className="bg-midnight text-light border-midnight">
                 {[
-                  "Lense Logo",
+                  "Lense Image",
                   "Lense Name",
                   //   "Brand Logo",
                   "Brand Name",
@@ -80,10 +100,14 @@ const LensesTable = () => {
                     <td className="p-2">
                       {item?.is_active ? "In-Stock" : "Out of Stock"}
                     </td>
-                    <td className="p-2 ">
+                    <td className="px-2 pt-3 d-flex gap-2">
                       <Button
                         text="Edit"
                         onClick={() => handleEdit(item?.$id)}
+                      />
+                      <Button
+                        text="Delete"
+                        onClick={() => handleDelete(item?.$id)}
                       />
                     </td>
                   </tr>
@@ -96,7 +120,7 @@ const LensesTable = () => {
                 className="text-theme"
                 defaultCurrent={page}
                 total={lenses?.count}
-                pageSize={5}
+                pageSize={limit}
                 onChange={(e) => setPage(e)}
               />
             )}

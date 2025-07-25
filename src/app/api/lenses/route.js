@@ -11,7 +11,7 @@ export async function GET(req) {
     const is_active = searchParams.get("is_active");
     const is_use = searchParams.get("is_use");
     const $id = searchParams.get("id");
-    // const limit = searchParams.get("limit");
+    const limit = searchParams.get("limit");
     const page = searchParams.get("page");
     // console.log(is_active, $id);
     if (authorization(req)) {
@@ -84,7 +84,7 @@ export async function GET(req) {
         );
       }
 
-      const limit = 5; // Number of documents per page
+      // const limit = 5; // Number of documents per page
       // const page = 1; // Current page (starting from 1)
 
       // Calculate offset based on current page
@@ -95,22 +95,24 @@ export async function GET(req) {
         is_active
           ? [Query.equal("is_active", true)] // Filter for active lenses
           : page
-          ? [
+            ? [
               Query.limit(limit), // Limit the number of results
               Query.offset(offset), // Skip the number of results specified by offset
             ]
-          : []
+            : []
       );
       const lens_brands = lenses.documents;
       // lens_brand_Id;
       const allLenses = [];
       for (const lense of lens_brands) {
-        const brand = await databases.getDocument(
-          process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
-          process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
-          lense?.lens_brand_Id
-        );
-
+        let brand = null;
+        if (lense?.lens_brand_Id) {
+          brand = await databases.getDocument(
+            process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+            process.env.NEXT_PUBLIC_LENSE_BRAND_COLLECTION, // collectionId
+            lense.lens_brand_Id
+          );
+        }
         allLenses.push({
           ...lense,
           brand,
@@ -171,6 +173,28 @@ export async function PUT(req) {
         request
       );
       return NextResponse.json(apiResponse(true, "Lense updated", data));
+    }
+    return NextResponse.json(
+      apiResponse(false, "You are not authorized", null)
+    );
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(apiResponse(false, err?.response?.message, err));
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    const documentId = searchParams.get("id");
+    if (authorization(req)) {
+      await databases.deleteDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, // databaseId
+        process.env.NEXT_PUBLIC_LENSE_COLLECTION, // collectionId
+        documentId
+      );
+      return NextResponse.json(apiResponse(true, "Lense deleted", null));
     }
     return NextResponse.json(
       apiResponse(false, "You are not authorized", null)
